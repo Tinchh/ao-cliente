@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
 Begin VB.Form frmConnect 
    BackColor       =   &H00E0E0E0&
    BorderStyle     =   0  'None
@@ -383,15 +384,15 @@ End Sub
 
 Private Sub CheckLicenseAgreement()
     'Recordatorio para cumplir la licencia, por si borrás el Boton sin leer el code...
-    Dim i As Long
+    Dim Iterator As Long
     
-    For i = 0 To Me.Controls.Count - 1
-        If Me.Controls(i).Name = "imgCodigoFuente" Then
+    For Iterator = 0 To Me.Controls.Count - 1
+        If Me.Controls(Iterator).Name = "imgCodigoFuente" Then
             Exit For
         End If
-    Next i
+    Next Iterator
     
-    If i = Me.Controls.Count Then
+    If Iterator = Me.Controls.Count Then
         MsgBox "No debe eliminarse la posibilidad de bajar el código de sus servidor. Caso contrario estarían violando la licencia Affero GPL y con ella derechos de autor, incurriendo de esta forma en un delito punible por ley." & vbCrLf & vbCrLf & vbCrLf & _
                 "Argentum Online es libre, es de todos. Mantengamoslo así. Si tanto te gusta el juego y querés los cambios que hacemos nosotros, compartí los tuyos. Es un cambio justo. Si no estás de acuerdo, no uses nuestro código, pues nadie te obliga o bien utiliza una versión anterior a la 0.12.0.", vbCritical Or vbApplicationModal
     End If
@@ -649,15 +650,15 @@ On Error Resume Next
     'Clear lstRedditPosts before populate it again to prevent repeated values.
     lstRedditPosts.Clear
     
-    Dim i As Integer
-    i = 1
-    Do While i <= qtyPostsOnReddit
-        Posts(i).Title = JsonObject.Item("data").Item("children").Item(i).Item("data").Item("title")
-        Posts(i).URL = JsonObject.Item("data").Item("children").Item(i).Item("data").Item("url")
+    Dim Iterator As Long
+    Iterator = 1
+    Do While Iterator <= qtyPostsOnReddit
+        Posts(Iterator).Title = JsonObject.Item("data").Item("children").Item(Iterator).Item("data").Item("title")
+        Posts(Iterator).URL = JsonObject.Item("data").Item("children").Item(Iterator).Item("data").Item("url")
         
-        lstRedditPosts.AddItem JsonObject.Item("data").Item("children").Item(i).Item("data").Item("title")
+        lstRedditPosts.AddItem JsonObject.Item("data").Item("children").Item(Iterator).Item("data").Item("title")
         
-        i = i + 1
+        Iterator = Iterator + 1
     Loop
 End Sub
 

@@ -127,9 +127,9 @@ On Error Resume Next
     Call DeInit_Auras
     
     '   Clean Particles
-    For i = 1 To UBound(ParticleTexture)
-        If Not ParticleTexture(i) Is Nothing Then Set ParticleTexture(i) = Nothing
-    Next i
+    For Iterator = 1 To UBound(ParticleTexture)
+        If Not ParticleTexture(Iterator) Is Nothing Then Set ParticleTexture(Iterator) = Nothing
+    Next Iterator
     
     '   Clean Texture
     DirectDevice.SetTexture 0, Nothing

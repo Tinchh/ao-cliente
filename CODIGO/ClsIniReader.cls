@@ -15,7 +15,7 @@ Option Explicit
 Option Base 0
 
 Private Type ChildNode
-    Key As String
+    key As String
     Value As String
 End Type
 
@@ -59,13 +59,13 @@ Private Sub Class_Terminate()
 'Last Modify Date: 5/01/2006
 '
 '**************************************************************
-    Dim i As Long
+    Dim Iterator As Long
     
     'Clean up
     If MainNodes Then
-        For i = 1 To MainNodes - 1
-            Erase fileData(i).values
-        Next i
+        For Iterator = 1 To MainNodes - 1
+            Erase fileData(Iterator).values
+        Next Iterator
         
         Erase fileData
     End If
@@ -121,7 +121,7 @@ Public Sub Initialize(ByVal File As String)
                             ReDim Preserve .values(.numValues) As ChildNode
                             
                             .values(.numValues).Value = Right$(Text, Len(Text) - Pos)
-                            .values(.numValues).Key = UCase$(Left$(Text, Pos - 1))
+                            .values(.numValues).key = UCase$(Left$(Text, Pos - 1))
                             
                             .numValues = .numValues + 1
                         End With
@@ -133,17 +133,17 @@ Public Sub Initialize(ByVal File As String)
     
     Close handle
     
-    Dim i As Long
+    Dim Iterator As Long
     
     If MainNodes Then
         'Sort main nodes to allow binary search
         Call SortMainNodes(0, MainNodes - 1)
         
         'Sort values of each node to allow binary search
-        For i = 0 To MainNodes - 1
-            If fileData(i).numValues Then _
-                Call SortChildNodes(fileData(i), 0, fileData(i).numValues - 1)
-        Next i
+        For Iterator = 0 To MainNodes - 1
+            If fileData(Iterator).numValues Then _
+                Call SortChildNodes(fileData(Iterator), 0, fileData(Iterator).numValues - 1)
+        Next Iterator
     End If
 End Sub
 
@@ -171,13 +171,13 @@ Private Sub SortChildNodes(ByRef Node As MainNode, ByVal first As Integer, ByVal
     Max = last
     
     With Node
-        comp = .values((Min + Max) \ 2).Key
+        comp = .values((Min + Max) \ 2).key
     
         Do While Min <= Max
-            Do While .values(Min).Key < comp And Min < last
+            Do While .values(Min).key < comp And Min < last
                 Min = Min + 1
             Loop
-            Do While .values(Max).Key > comp And Max > first
+            Do While .values(Max).key > comp And Max > first
                 Max = Max - 1
             Loop
             If Min <= Max Then
@@ -246,24 +246,24 @@ End Sub
 '   @returns  The value asociated with the given key under the requeted main section of the INI file or a null string if it's not found.
 '
 
-Public Function GetValue(ByVal Main As String, ByVal Key As String) As String
+Public Function GetValue(ByVal Main As String, ByVal key As String) As String
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero
 'Last Modify Date: 5/01/2006
 'Returns a value if the key and main node exist, or a nullstring otherwise
 '**************************************************************
-    Dim i As Long
-    Dim J As Long
+    Dim Iterator As Long
+    Dim Counter As Long
     
     'Search for the main node
-    i = FindMain(UCase$(Main))
+    Iterator = FindMain(UCase$(Main))
     
-    If i >= 0 Then
+    If Iterator >= 0 Then
         'If valid, binary search among keys
-        J = FindKey(fileData(i), UCase$(Key))
+        Counter = FindKey(fileData(Iterator), UCase$(key))
         
         'If we found it we return it
-        If J >= 0 Then GetValue = fileData(i).values(J).Value
+        If Counter >= 0 Then GetValue = fileData(Iterator).values(Counter).Value
     End If
 End Function
 
@@ -275,7 +275,7 @@ End Function
 '   @returns  The index in which the value with the key we are looking for is stored or the negation of the index in which it should be if not found.
 '
 
-Private Function FindKey(ByRef Node As MainNode, ByVal Key As String) As Long
+Private Function FindKey(ByRef Node As MainNode, ByVal key As String) As Long
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero
 'Last Modify Date: 5/01/2006
@@ -292,9 +292,9 @@ Private Function FindKey(ByRef Node As MainNode, ByVal Key As String) As Long
     Do While Min <= Max
         mid = (Min + Max) \ 2
         
-        If Node.values(mid).Key < Key Then
+        If Node.values(mid).key < key Then
             Min = mid + 1
-        ElseIf Node.values(mid).Key > Key Then
+        ElseIf Node.values(mid).key > key Then
             Max = mid - 1
         Else
             'We found it

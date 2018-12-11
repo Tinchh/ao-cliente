@@ -1453,25 +1453,25 @@ Private Sub IniciarGraficos()
 End Sub
 
 Private Sub CargarCombos()
-    Dim i As Integer
+    Dim Iterator As Integer
     
     lstProfesion.Clear
     
-    For i = LBound(ListaClases) To NroClases
-        lstProfesion.AddItem ListaClases(i)
-    Next i
+    For Iterator = LBound(ListaClases) To NroClases
+        lstProfesion.AddItem ListaClases(Iterator)
+    Next Iterator
     
     lstHogar.Clear
     
-    For i = LBound(Ciudades()) To UBound(Ciudades())
-        lstHogar.AddItem Ciudades(i)
-    Next i
+    For Iterator = LBound(Ciudades()) To UBound(Ciudades())
+        lstHogar.AddItem Ciudades(Iterator)
+    Next Iterator
     
     lstRaza.Clear
     
-    For i = LBound(ListaRazas()) To NroRazas
-        lstRaza.AddItem ListaRazas(i)
-    Next i
+    For Iterator = LBound(ListaRazas()) To NroRazas
+        lstRaza.AddItem ListaRazas(Iterator)
+    Next Iterator
     
     lstProfesion.ListIndex = 1
 End Sub
@@ -1526,13 +1526,13 @@ Function CheckData() As Boolean
         Exit Function
     End If
     'Toqueteado x Salvito
-    Dim i As Integer
-    For i = 1 To NUMATRIBUTOS
-        If Val(lblAtributos(i).Caption) = 0 Then
+    Dim Iterator As Integer
+    For Iterator = 1 To NUMATRIBUTOS
+        If Val(lblAtributos(Iterator).Caption) = 0 Then
             MsgBox "Los atributos del personaje son invalidos."
             Exit Function
         End If
-    Next i
+    Next Iterator
     
     If Len(UserName) > 30 Then
         MsgBox ("El nombre debe tener menos de 30 letras.")
@@ -1598,7 +1598,7 @@ End Sub
 
 Private Sub imgCrear_Click()
 
-    Dim i As Integer
+    Dim Iterator As Integer
     Dim CharAscii As Byte
     
     UserName = txtNombre.Text
@@ -1612,22 +1612,22 @@ Private Sub imgCrear_Click()
     UserSexo = lstGenero.ListIndex + 1
     UserClase = lstProfesion.ListIndex + 1
     
-    For i = 1 To NUMATRIBUTES
-        UserAtributos(i) = Val(lblAtributos(i).Caption)
-    Next i
+    For Iterator = 1 To NUMATRIBUTES
+        UserAtributos(Iterator) = Val(lblAtributos(Iterator).Caption)
+    Next Iterator
          
     UserHogar = lstHogar.ListIndex + 1
     
     If Not CheckData Then Exit Sub
     UserPassword = txtPasswd.Text
     
-    For i = 1 To Len(UserPassword)
-        CharAscii = Asc(mid$(UserPassword, i, 1))
+    For Iterator = 1 To Len(UserPassword)
+        CharAscii = Asc(mid$(UserPassword, Iterator, 1))
         If Not LegalCharacter(CharAscii) Then
             MsgBox ("Password inválido. El caractér " & Chr$(CharAscii) & " no está permitido.")
             Exit Sub
         End If
-    Next i
+    Next Iterator
     
     UserEmail = txtMail.Text
     
@@ -2184,7 +2184,7 @@ End Sub
 
 Private Sub UpdateRazaMod()
     Dim SelRaza As Integer
-    Dim i As Integer
+    Dim Iterator As Integer
     
     
     If lstRaza.ListIndex > -1 Then
@@ -2201,9 +2201,9 @@ Private Sub UpdateRazaMod()
     End If
     
     ' Atributo total
-    For i = 1 To NUMATRIBUTES
-        lblAtributoFinal(i).Caption = Val(lblAtributos(i).Caption) + Val(lblModRaza(i))
-    Next i
+    For Iterator = 1 To NUMATRIBUTES
+        lblAtributoFinal(Iterator).Caption = Val(lblAtributos(Iterator).Caption) + Val(lblModRaza(Iterator))
+    Next Iterator
     
 End Sub
 
@@ -2298,7 +2298,7 @@ End Sub
 
 Private Sub LoadCharInfo()
     Dim SearchVar As String
-    Dim i As Integer
+    Dim Iterator As Integer
     
     NroRazas = UBound(ListaRazas())
     NroClases = UBound(ListaClases())
@@ -2307,9 +2307,9 @@ Private Sub LoadCharInfo()
     ReDim ModClase(1 To NroClases)
     
     'Modificadores de Clase
-    For i = 1 To NroClases
-        With ModClase(i)
-            SearchVar = ListaClases(i)
+    For Iterator = 1 To NroClases
+        With ModClase(Iterator)
+            SearchVar = ListaClases(Iterator)
             
             .Evasion = Val(GetVar(IniPath & "CharInfo.dat", "MODEVASION", SearchVar))
             .AtaqueArmas = Val(GetVar(IniPath & "CharInfo.dat", "MODATAQUEARMAS", SearchVar))
@@ -2321,12 +2321,12 @@ Private Sub LoadCharInfo()
             .Magia = Val(GetVar(IniPath & "CharInfo.dat", "MODMAGIA", SearchVar))
             .Vida = Val(GetVar(IniPath & "CharInfo.dat", "MODVIDA", SearchVar))
         End With
-    Next i
+    Next Iterator
     
     'Modificadores de Raza
-    For i = 1 To NroRazas
-        With ModRaza(i)
-            SearchVar = Replace(ListaRazas(i), " ", "")
+    For Iterator = 1 To NroRazas
+        With ModRaza(Iterator)
+            SearchVar = Replace(ListaRazas(Iterator), " ", "")
         
             .Fuerza = Val(GetVar(IniPath & "CharInfo.dat", "MODRAZA", SearchVar + "Fuerza"))
             .Agilidad = Val(GetVar(IniPath & "CharInfo.dat", "MODRAZA", SearchVar + "Agilidad"))
@@ -2334,6 +2334,6 @@ Private Sub LoadCharInfo()
             .Carisma = Val(GetVar(IniPath & "CharInfo.dat", "MODRAZA", SearchVar + "Carisma"))
             .Constitucion = Val(GetVar(IniPath & "CharInfo.dat", "MODRAZA", SearchVar + "Constitucion"))
         End With
-    Next i
+    Next Iterator
 
 End Sub

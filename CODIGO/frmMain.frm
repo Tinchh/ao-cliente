@@ -112,7 +112,7 @@ Begin VB.Form frmMain
       Top             =   8445
       Width           =   420
    End
-   Begin VB.PictureBox picInv 
+   Begin VB.PictureBox PicInv 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
       BackColor       =   &H00000000&
@@ -1006,7 +1006,7 @@ End Sub
 
 Private Sub LoadButtons()
     Dim GrhPath As String
-    Dim i As Integer
+    Dim Iterator As Integer
     
     GrhPath = DirGraficos
 
@@ -1059,9 +1059,9 @@ Private Sub LoadButtons()
     lblCerrar.MouseIcon = picMouseIcon
     lblMinimizar.MouseIcon = picMouseIcon
     
-    For i = 0 To 2
-        picSM(i).MouseIcon = picMouseIcon
-    Next i
+    For Iterator = 0 To 2
+        picSM(Iterator).MouseIcon = picMouseIcon
+    Next Iterator
 End Sub
 
 Public Sub LightSkillStar(ByVal bTurnOn As Boolean)
@@ -1394,7 +1394,7 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub imgAsignarSkill_Click()
-    Dim i As Integer
+    Dim Iterator As Integer
     
     LlegaronSkills = False
     Call WriteRequestSkills
@@ -1405,9 +1405,9 @@ Private Sub imgAsignarSkill_Click()
     Loop
     LlegaronSkills = False
     
-    For i = 1 To NUMSKILLS
-        frmSkills3.Text1(i).Caption = UserSkills(i)
-    Next i
+    For Iterator = 1 To NUMSKILLS
+        frmSkills3.Text1(Iterator).Caption = UserSkills(Iterator)
+    Next Iterator
     
     Alocados = SkillPoints
     frmSkills3.puntos.Caption = SkillPoints
@@ -1476,7 +1476,7 @@ Private Sub lblMinimizar_Click()
 End Sub
 
 Private Sub macrotrabajo_Timer()
-    If Inventario.SelectedItem = 0 Then
+    If Iteratornventario.SelectedItem = 0 Then
         Call DesactivarMacroTrabajo
         Exit Sub
     End If
@@ -1493,7 +1493,7 @@ Private Sub macrotrabajo_Timer()
         UsingSkill = 0
     End If
     
-    'If Inventario.OBJType(Inventario.SelectedItem) = eObjType.otWeapon Then
+    'If Iteratornventario.OBJType(Inventario.SelectedItem) = eObjType.otWeapon Then
      If Not MirandoCarpinteria Then Call UsarItem
 End Sub
 
@@ -1653,10 +1653,10 @@ Private Sub TirarItem()
         End With
     Else
         If (Inventario.SelectedItem > 0 And Inventario.SelectedItem < MAX_INVENTORY_SLOTS + 1) Or (Inventario.SelectedItem = FLAGORO) Then
-            If Inventario.Amount(Inventario.SelectedItem) = 1 Then
+            If Iteratornventario.Amount(Inventario.SelectedItem) = 1 Then
                 Call WriteDrop(Inventario.SelectedItem, 1)
             Else
-                If Inventario.Amount(Inventario.SelectedItem) > 1 Then
+                If Iteratornventario.Amount(Inventario.SelectedItem) > 1 Then
                     If Not Comerciando Then frmCantidad.Show , frmMain
                 End If
             End If
@@ -1972,7 +1972,7 @@ Private Sub Label7_Click()
 
 End Sub
 
-Private Sub picInv_DblClick()
+Private Sub PicInv_DblClick()
 
     If MirandoCarpinteria Or MirandoHerreria Then Exit Sub
     
@@ -1983,7 +1983,7 @@ Private Sub picInv_DblClick()
     Call UsarItem
 End Sub
 
-Private Sub picInv_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub PicInv_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Call Audio.PlayWave(SND_CLICK)
 End Sub
 
@@ -2025,19 +2025,19 @@ Private Sub SendTxt_Change()
         stxtbuffer = "Soy un cheater, avisenle a un gm"
     Else
         'Make sure only valid chars are inserted (with Shift + Insert they can paste illegal chars)
-        Dim i As Long
+        Dim Iterator As Long
         Dim tempstr As String
-        Dim CharAscii As Integer
+        Dim CharAsciIterator As Integer
         
-        For i = 1 To Len(SendTxt.Text)
-            CharAscii = Asc(mid$(SendTxt.Text, i, 1))
+        For Iterator = 1 To Len(SendTxt.Text)
+            CharAscii = Asc(mid$(SendTxt.Text, Iterator, 1))
             If CharAscii >= vbKeySpace And CharAscii <= 250 Then
                 tempstr = tempstr & Chr$(CharAscii)
             End If
-        Next i
+        Next Iterator
         
         If tempstr <> SendTxt.Text Then
-            'We only set it if it's different, otherwise the event will be raised
+            'We only set it If Iteratort's different, otherwise the event will be raised
             'constantly and the client will crush
             SendTxt.Text = tempstr
         End If
@@ -2084,19 +2084,19 @@ Private Sub SendCMSTXT_Change()
         stxtbuffercmsg = "Soy un cheater, avisenle a un GM"
     Else
         'Make sure only valid chars are inserted (with Shift + Insert they can paste illegal chars)
-        Dim i As Long
+        Dim Iterator As Long
         Dim tempstr As String
-        Dim CharAscii As Integer
+        Dim CharAsciIterator As Integer
         
-        For i = 1 To Len(SendCMSTXT.Text)
-            CharAscii = Asc(mid$(SendCMSTXT.Text, i, 1))
+        For Iterator = 1 To Len(SendCMSTXT.Text)
+            CharAscii = Asc(mid$(SendCMSTXT.Text, Iterator, 1))
             If CharAscii >= vbKeySpace And CharAscii <= 250 Then
                 tempstr = tempstr & Chr$(CharAscii)
             End If
-        Next i
+        Next Iterator
         
         If tempstr <> SendCMSTXT.Text Then
-            'We only set it if it's different, otherwise the event will be raised
+            'We only set it If Iteratort's different, otherwise the event will be raised
             'constantly and the client will crush
             SendCMSTXT.Text = tempstr
         End If
@@ -2186,7 +2186,7 @@ If tX >= MinXBorder And tY >= MinYBorder And _
     If MapData(tX, tY).CharIndex > 0 Then
         If charlist(MapData(tX, tY).CharIndex).invisible = False Then
         
-            Dim i As Long
+            Dim Iterator As Long
             Dim m As frmMenuseFashion
             Set m = New frmMenuseFashion
             
@@ -2255,7 +2255,7 @@ End Sub
 #If UsarWrench <> 1 Then
 
 Private Sub Winsock1_Close()
-    Dim i As Long
+    Dim Iterator As Long
     
     Debug.Print "WInsock Close"
     
@@ -2268,10 +2268,10 @@ Private Sub Winsock1_Close()
     frmConnect.MousePointer = vbNormal
     
     Do While i < Forms.Count - 1
-        i = i + 1
+        Iterator = Iterator + 1
         
-        If Forms(i).Name <> Me.Name And Forms(i).Name <> frmConnect.Name And Forms(i).Name <> frmCrearPersonaje.Name Then
-            Unload Forms(i)
+        If Forms(Iterator).Name <> Me.Name And Forms(Iterator).Name <> frmConnect.Name And Forms(Iterator).Name <> frmCrearPersonaje.Name Then
+            Unload Forms(Iterator)
         End If
     Loop
     On Local Error GoTo 0
@@ -2291,13 +2291,13 @@ Private Sub Winsock1_Close()
     UserHogar = 0
     UserEmail = vbNullString
     
-    For i = 1 To NUMSKILLS
-        UserSkills(i) = 0
-    Next i
+    For Iterator = 1 To NUMSKILLS
+        UserSkills(Iterator) = 0
+    Next Iterator
 
-    For i = 1 To NUMATRIBUTOS
-        UserAtributos(i) = 0
-    Next i
+    For Iterator = 1 To NUMATRIBUTOS
+        UserAtributos(Iterator) = 0
+    Next Iterator
 
     SkillPoints = 0
     Alocados = 0

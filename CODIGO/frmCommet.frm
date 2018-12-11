@@ -173,14 +173,14 @@ Private Sub imgEnviar_Click()
     ElseIf T = RECHAZOPJ Then
         Call WriteGuildRejectNewMember(Nombre, Replace(Replace(Text1.Text, ",", " "), vbNewLine, " "))
         'Sacamos el char de la lista de aspirantes
-        Dim i As Long
+        Dim Iterator As Long
         
-        For i = 0 To frmGuildLeader.solicitudes.ListCount - 1
-            If frmGuildLeader.solicitudes.List(i) = Nombre Then
+        For Iterator = 0 To frmGuildLeader.solicitudes.ListCount - 1
+            If frmGuildLeader.solicitudes.List(Iterator) = Nombre Then
                 frmGuildLeader.solicitudes.RemoveItem i
                 Exit For
             End If
-        Next i
+        Next Iterator
         
         Me.Hide
         Unload frmCharInfo

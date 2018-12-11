@@ -84,18 +84,18 @@ Private Sub Class_Terminate()
 'Last Modify Date: 3/06/2006
 'Clean up
 '**************************************************************
-    Dim i As Long
-    Dim J As Long
+    Dim Iterator As Long
+    Dim Counter As Long
     
     'Destroy every surface in memory
-    For i = 0 To HASH_TABLE_SIZE - 1
-        For J = 1 To surfaceList(i).sufraceCount
-            Set surfaceList(i).SurfaceEntry(J).Surface = Nothing
-        Next J
+    For Iterator = 0 To HASH_TABLE_SIZE - 1
+        For Counter = 1 To surfaceList(Iterator).sufraceCount
+            Set surfaceList(Iterator).SurfaceEntry(Counter).Surface = Nothing
+        Next Counter
         
         'Destroy the array
-        Erase surfaceList(i).SurfaceEntry
-    Next i
+        Erase surfaceList(Iterator).SurfaceEntry
+    Next Iterator
 End Sub
 
 Private Sub clsSurfaceManager_Initialize(ByRef DD As D3DX8, ByVal graphicPath As String, Optional ByVal maxMemoryUsageInMb As Long = -1&)
@@ -115,16 +115,16 @@ Private Property Get clsSurfaceManager_Surface(ByVal fileIndex As Long) As Direc
 'Retrieves the requested texture
 '**************************************************************
 On Error GoTo ErrHandler:
-    Dim i As Long
+    Dim Iterator As Long
     
     ' Search for it and return it
     With surfaceList(fileIndex Mod HASH_TABLE_SIZE)
-        For i = 1 To .sufraceCount
-            If .SurfaceEntry(i).fileIndex = fileIndex Then
-                Set clsSurfaceManager_Surface = .SurfaceEntry(i).Surface
+        For Iterator = 1 To .sufraceCount
+            If .SurfaceEntry(Iterator).fileIndex = fileIndex Then
+                Set clsSurfaceManager_Surface = .SurfaceEntry(Iterator).Surface
                 Exit Property
             End If
-        Next i
+        Next Iterator
     End With
     
     'We have a missing resource!
@@ -151,9 +151,9 @@ On Error Resume Next
     Dim surfaceIndex As Long
     Dim bmpInfo As BITMAPINFO
     Dim data() As Byte
-    Dim i As Long
+    Dim Iterator As Long
     
-    While GetNext_Bitmap(ResourcePath, i, bmpInfo, data(), surfaceIndex)
+    While GetNext_Bitmap(ResourcePath, Iterator, bmpInfo, data(), surfaceIndex)
         Call LoadSurface(bmpInfo, data(), surfaceIndex)
     Wend
 End Sub

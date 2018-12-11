@@ -427,8 +427,8 @@ Private Const MayIndex = "!@#$%^&*()_+|QWERTYUIOP{}ASDFGHJKL:""ZXCVBNM<>?"
 Private Modo As e_modo_keypad
 
 Private Sub Form_Activate()
-Dim i As Integer
-Dim J As Integer
+Dim Iterator As Integer
+Dim Counter As Integer
     i = RandomNumber(-2000, 2000)
     J = RandomNumber(-350, 350)
     Me.Top = Me.Top + J

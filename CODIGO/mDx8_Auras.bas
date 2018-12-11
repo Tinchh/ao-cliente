@@ -38,32 +38,32 @@ Public Sub Load_Auras()
 'Last Modification: 26/05/10
 'Load Auras
 '***************************************************
-    Dim i As Integer, AurasTotales As Integer, Leer As New ClsIniReader
+    Dim Iterator As Integer, AurasTotales As Integer, Leer As New ClsIniReader
     Leer.Initialize App.path & "\init\auras.ini"
 
     AurasTotales = Val(Leer.GetValue("Auras", "NumAuras"))
     
     ReDim Preserve Auras(1 To AurasTotales)
     
-            For i = 1 To AurasTotales
-                Auras(i).Grh = Val(Leer.GetValue(i, "GrhIndex"))
+            For Iterator = 1 To AurasTotales
+                Auras(Iterator).Grh = Val(Leer.GetValue(Iterator, "GrhIndex"))
                 
-                Auras(i).Rotation = Val(Leer.GetValue(i, "Rotate"))
-                Auras(i).Angle = 0
-                Auras(i).Speed = Leer.GetValue(i, "Speed")
+                Auras(Iterator).Rotation = Val(Leer.GetValue(Iterator, "Rotate"))
+                Auras(Iterator).Angle = 0
+                Auras(Iterator).Speed = Leer.GetValue(Iterator, "Speed")
                 
-                Auras(i).OffsetX = Val(Leer.GetValue(i, "OffsetX"))
-                Auras(i).OffsetY = Val(Leer.GetValue(i, "OffsetY"))
+                Auras(Iterator).OffsetX = Val(Leer.GetValue(Iterator, "OffsetX"))
+                Auras(Iterator).OffsetY = Val(Leer.GetValue(Iterator, "OffsetY"))
 
             Dim ColorSet As Byte, TempSet As String
             
             For ColorSet = 0 To 3
-                TempSet = Leer.GetValue(Val(i), "Color" & ColorSet)
-                Auras(i).Color(ColorSet) = D3DColorXRGB(ReadField(1, TempSet, Asc(",")), ReadField(2, TempSet, Asc(",")), ReadField(3, TempSet, Asc(",")))
+                TempSet = Leer.GetValue(Val(Iterator), "Color" & ColorSet)
+                Auras(Iterator).Color(ColorSet) = D3DColorXRGB(ReadField(1, TempSet, Asc(",")), ReadField(2, TempSet, Asc(",")), ReadField(3, TempSet, Asc(",")))
             Next ColorSet
                 
-                Auras(i).TickCount = 0
-            Next i
+                Auras(Iterator).TickCount = 0
+            Next Iterator
                                                          
     Set Leer = Nothing
 End Sub
@@ -156,14 +156,14 @@ Public Sub Render_Auras(ByVal CharIndex As Integer, X As Integer, Y As Integer)
 '***************************************************
 On Error GoTo handle
     Dim i As Byte
-        For i = 1 To 4
-            With charlist(CharIndex).Aura(i)
+        For Iterator = 1 To 4
+            With charlist(CharIndex).Aura(Iterator)
                 If .Grh <> 0 Then
                     If .Rotation = 1 Then Update_Aura CharIndex, i
                     Call DDrawTransGrhIndextoSurface(.Grh, X + .OffsetX, Y + .OffsetY, 1, .Color(), .Angle, True)
                 End If
             End With
-        Next i
+        Next Iterator
 handle:
     Exit Sub
 End Sub

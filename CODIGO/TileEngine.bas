@@ -36,7 +36,7 @@ Attribute VB_Name = "Mod_TileEngine"
 Option Explicit
 
 #If False Then 'to fix VB fucking up the var names
-    Dim Nombre, PicInv, fX As String
+    Dim Nombre As String
 #End If
 
 Private OffsetCounterX As Single
@@ -169,7 +169,7 @@ Public Type Char
     Escudo As ShieldAnimData
     UsandoArma As Boolean
     
-    fX As Grh
+    FxGrh As Grh
     FxIndex As Integer
     
     Criminal As Byte
@@ -214,7 +214,7 @@ Public Type MapBlock
     Trigger As Integer
     Engine_Light(0 To 3) As Long 'Standelf, Light Engine.
     
-    fX As Grh
+    FxGrh As Grh
     FxIndex As Integer
 End Type
 
@@ -366,7 +366,7 @@ Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Lon
 
 Sub CargarCabezas()
     Dim N As Integer
-    Dim i As Long
+    Dim Iterator As Long
     Dim Numheads As Integer
     Dim Miscabezas() As tIndiceCabeza
     
@@ -383,23 +383,23 @@ Sub CargarCabezas()
     ReDim HeadData(0 To Numheads) As HeadData
     ReDim Miscabezas(0 To Numheads) As tIndiceCabeza
     
-    For i = 1 To Numheads
-        Get #N, , Miscabezas(i)
+    For Iterator = 1 To Numheads
+        Get #N, , Miscabezas(Iterator)
         
-        If Miscabezas(i).Head(1) Then
-            Call InitGrh(HeadData(i).Head(1), Miscabezas(i).Head(1), 0)
-            Call InitGrh(HeadData(i).Head(2), Miscabezas(i).Head(2), 0)
-            Call InitGrh(HeadData(i).Head(3), Miscabezas(i).Head(3), 0)
-            Call InitGrh(HeadData(i).Head(4), Miscabezas(i).Head(4), 0)
+        If Miscabezas(Iterator).Head(1) Then
+            Call InitGrh(HeadData(Iterator).Head(1), Miscabezas(Iterator).Head(1), 0)
+            Call InitGrh(HeadData(Iterator).Head(2), Miscabezas(Iterator).Head(2), 0)
+            Call InitGrh(HeadData(Iterator).Head(3), Miscabezas(Iterator).Head(3), 0)
+            Call InitGrh(HeadData(Iterator).Head(4), Miscabezas(Iterator).Head(4), 0)
         End If
-    Next i
+    Next Iterator
     
     Close #N
 End Sub
 
 Sub CargarCascos()
     Dim N As Integer
-    Dim i As Long
+    Dim Iterator As Long
     Dim NumCascos As Integer
 
     Dim Miscabezas() As tIndiceCabeza
@@ -417,23 +417,23 @@ Sub CargarCascos()
     ReDim CascoAnimData(0 To NumCascos) As HeadData
     ReDim Miscabezas(0 To NumCascos) As tIndiceCabeza
     
-    For i = 1 To NumCascos
-        Get #N, , Miscabezas(i)
+    For Iterator = 1 To NumCascos
+        Get #N, , Miscabezas(Iterator)
         
-        If Miscabezas(i).Head(1) Then
-            Call InitGrh(CascoAnimData(i).Head(1), Miscabezas(i).Head(1), 0)
-            Call InitGrh(CascoAnimData(i).Head(2), Miscabezas(i).Head(2), 0)
-            Call InitGrh(CascoAnimData(i).Head(3), Miscabezas(i).Head(3), 0)
-            Call InitGrh(CascoAnimData(i).Head(4), Miscabezas(i).Head(4), 0)
+        If Miscabezas(Iterator).Head(1) Then
+            Call InitGrh(CascoAnimData(Iterator).Head(1), Miscabezas(Iterator).Head(1), 0)
+            Call InitGrh(CascoAnimData(Iterator).Head(2), Miscabezas(Iterator).Head(2), 0)
+            Call InitGrh(CascoAnimData(Iterator).Head(3), Miscabezas(Iterator).Head(3), 0)
+            Call InitGrh(CascoAnimData(Iterator).Head(4), Miscabezas(Iterator).Head(4), 0)
         End If
-    Next i
+    Next Iterator
     
     Close #N
 End Sub
 
 Sub CargarCuerpos()
     Dim N As Integer
-    Dim i As Long
+    Dim Iterator As Long
     Dim NumCuerpos As Integer
     Dim MisCuerpos() As tIndiceCuerpo
     
@@ -450,26 +450,26 @@ Sub CargarCuerpos()
     ReDim BodyData(0 To NumCuerpos) As BodyData
     ReDim MisCuerpos(0 To NumCuerpos) As tIndiceCuerpo
     
-    For i = 1 To NumCuerpos
-        Get #N, , MisCuerpos(i)
+    For Iterator = 1 To NumCuerpos
+        Get #N, , MisCuerpos(Iterator)
         
-        If MisCuerpos(i).Body(1) Then
-            InitGrh BodyData(i).Walk(1), MisCuerpos(i).Body(1), 0
-            InitGrh BodyData(i).Walk(2), MisCuerpos(i).Body(2), 0
-            InitGrh BodyData(i).Walk(3), MisCuerpos(i).Body(3), 0
-            InitGrh BodyData(i).Walk(4), MisCuerpos(i).Body(4), 0
+        If MisCuerpos(Iterator).Body(1) Then
+            InitGrh BodyData(Iterator).Walk(1), MisCuerpos(Iterator).Body(1), 0
+            InitGrh BodyData(Iterator).Walk(2), MisCuerpos(Iterator).Body(2), 0
+            InitGrh BodyData(Iterator).Walk(3), MisCuerpos(Iterator).Body(3), 0
+            InitGrh BodyData(Iterator).Walk(4), MisCuerpos(Iterator).Body(4), 0
             
-            BodyData(i).HeadOffset.X = MisCuerpos(i).HeadOffsetX
-            BodyData(i).HeadOffset.Y = MisCuerpos(i).HeadOffsetY
+            BodyData(Iterator).HeadOffset.X = MisCuerpos(Iterator).HeadOffsetX
+            BodyData(Iterator).HeadOffset.Y = MisCuerpos(Iterator).HeadOffsetY
         End If
-    Next i
+    Next Iterator
     
     Close #N
 End Sub
 
 Sub CargarFxs()
     Dim N As Integer
-    Dim i As Long
+    Dim Iterator As Long
     Dim NumFxs As Integer
     
     N = FreeFile()
@@ -484,17 +484,17 @@ Sub CargarFxs()
     'Resize array
     ReDim FxData(0 To NumFxs) As tIndiceFx
     
-    For i = 1 To NumFxs
-        Get #N, , FxData(i)
-        'MsgBox FxData(i).Animacion & FxData(i).OffsetX
-    Next i
+    For Iterator = 1 To NumFxs
+        Get #N, , FxData(Iterator)
+        'MsgBox FxData(Iterator).Animacion & FxData(Iterator).OffsetX
+    Next Iterator
     
     Close #N
 End Sub
 
 Sub CargarTips()
     Dim N As Integer
-    Dim i As Long
+    Dim Iterator As Long
     Dim NumTips As Integer
     
     N = FreeFile
@@ -509,16 +509,16 @@ Sub CargarTips()
     'Resize array
     ReDim Tips(1 To NumTips) As String * 255
     
-    For i = 1 To NumTips
-        Get #N, , Tips(i)
-    Next i
+    For Iterator = 1 To NumTips
+        Get #N, , Tips(Iterator)
+    Next Iterator
     
     Close #N
 End Sub
 
 Sub CargarArrayLluvia()
     Dim N As Integer
-    Dim i As Long
+    Dim Iterator As Long
     Dim Nu As Integer
     
     N = FreeFile()
@@ -533,9 +533,9 @@ Sub CargarArrayLluvia()
     'Resize array
     ReDim bLluvia(1 To Nu) As Byte
     
-    For i = 1 To Nu
-        Get #N, , bLluvia(i)
-    Next i
+    For Iterator = 1 To Nu
+        Get #N, , bLluvia(Iterator)
+    Next Iterator
     
     Close #N
 End Sub
@@ -832,10 +832,10 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
 End Sub
 
 Private Function HayFogata(ByRef Location As Position) As Boolean
-    Dim j As Long
+    Dim Counter As Long
     Dim k As Long
     
-    For j = UserPos.X - 8 To UserPos.X + 8
+    For Counter = UserPos.X - 8 To UserPos.X + 8
         For k = UserPos.Y - 6 To UserPos.Y + 6
             If InMapBounds(j, k) Then
                 If MapData(j, k).ObjGrh.GrhIndex = GrhFogata Then
@@ -847,7 +847,7 @@ Private Function HayFogata(ByRef Location As Position) As Boolean
                 End If
             End If
         Next k
-    Next j
+    next Counter
 End Function
 
 Function NextOpenChar() As Integer
@@ -1251,9 +1251,9 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                     
                     If MapData(X, Y).FxIndex <> 0 Then
                         
-                        Call DDrawTransGrhtoSurface(MapData(X, Y).fX, PixelOffsetXTemp + FxData(.FxIndex).OffsetX, PixelOffsetYTemp + FxData(.FxIndex).OffsetY, 1, MapData(X, Y).Engine_Light(), 1, X, Y, True)
+                        Call DDrawTransGrhtoSurface(MapData(X, Y).FxGrh, PixelOffsetXTemp + FxData(.FxIndex).OffsetX, PixelOffsetYTemp + FxData(.FxIndex).OffsetY, 1, MapData(X, Y).Engine_Light(), 1, X, Y, True)
                         
-                        If MapData(X, Y).fX.Started = 0 Then _
+                        If MapData(X, Y).FxGrh.Started = 0 Then _
                             MapData(X, Y).FxIndex = 0
                     End If
                 End With
@@ -1302,35 +1302,35 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     If ClientSetup.ProyectileEngine Then
                             
         If LastProjectile > 0 Then
-            Dim j As Long ' Long siempre en los bucles es mucho mas rapido
+            Dim Counter As Long ' Long siempre en los bucles es mucho mas rapido
                                 
-            For j = 1 To LastProjectile
-                If ProjectileList(j).Grh.GrhIndex Then
+            For Counter = 1 To LastProjectile
+                If ProjectileList(Counter).Grh.GrhIndex Then
                     Dim Angle As Single
                     'Update the position
-                    Angle = DegreeToRadian * Engine_GetAngle(ProjectileList(j).X, ProjectileList(j).Y, ProjectileList(j).tX, ProjectileList(j).tY)
-                    ProjectileList(j).X = ProjectileList(j).X + (Sin(Angle) * ElapsedTime * 0.63)
-                    ProjectileList(j).Y = ProjectileList(j).Y - (Cos(Angle) * ElapsedTime * 0.63)
+                    Angle = DegreeToRadian * Engine_GetAngle(ProjectileList(Counter).X, ProjectileList(Counter).Y, ProjectileList(Counter).tX, ProjectileList(Counter).tY)
+                    ProjectileList(Counter).X = ProjectileList(Counter).X + (Sin(Angle) * ElapsedTime * 0.63)
+                    ProjectileList(Counter).Y = ProjectileList(Counter).Y - (Cos(Angle) * ElapsedTime * 0.63)
                     
                     'Update the rotation
-                    If ProjectileList(j).RotateSpeed > 0 Then
-                        ProjectileList(j).Rotate = ProjectileList(j).Rotate + (ProjectileList(j).RotateSpeed * ElapsedTime * 0.01)
-                        Do While ProjectileList(j).Rotate > 360
-                            ProjectileList(j).Rotate = ProjectileList(j).Rotate - 360
+                    If ProjectileList(Counter).RotateSpeed > 0 Then
+                        ProjectileList(Counter).Rotate = ProjectileList(Counter).Rotate + (ProjectileList(Counter).RotateSpeed * ElapsedTime * 0.01)
+                        Do While ProjectileList(Counter).Rotate > 360
+                            ProjectileList(Counter).Rotate = ProjectileList(Counter).Rotate - 360
                         Loop
                     End If
     
                     'Draw if within range
-                    X = ((-minX - 1) * 32) + ProjectileList(j).X + PixelOffsetX + ((10 - TileBufferSize) * 32) - 288 + ProjectileList(j).OffsetX
-                    Y = ((-minY - 1) * 32) + ProjectileList(j).Y + PixelOffsetY + ((10 - TileBufferSize) * 32) - 288 + ProjectileList(j).OffsetY
+                    X = ((-minX - 1) * 32) + ProjectileList(Counter).X + PixelOffsetX + ((10 - TileBufferSize) * 32) - 288 + ProjectileList(Counter).OffsetX
+                    Y = ((-minY - 1) * 32) + ProjectileList(Counter).Y + PixelOffsetY + ((10 - TileBufferSize) * 32) - 288 + ProjectileList(Counter).OffsetY
                     If Y >= -32 Then
                         If Y <= (ScreenHeight + 32) Then
                             If X >= -32 Then
                                 If X <= (ScreenWidth + 32) Then
-                                    If ProjectileList(j).Rotate = 0 Then
-                                        DDrawTransGrhtoSurface ProjectileList(j).Grh, X, Y, 0, MapData(50, 50).Engine_Light(), 0, 50, 50, True, 0
+                                    If ProjectileList(Counter).Rotate = 0 Then
+                                        DDrawTransGrhtoSurface ProjectileList(Counter).Grh, X, Y, 0, MapData(50, 50).Engine_Light(), 0, 50, 50, True, 0
                                     Else
-                                        DDrawTransGrhtoSurface ProjectileList(j).Grh, X, Y, 0, MapData(50, 50).Engine_Light(), 0, 50, 50, True, ProjectileList(j).Rotate
+                                        DDrawTransGrhtoSurface ProjectileList(Counter).Grh, X, Y, 0, MapData(50, 50).Engine_Light(), 0, 50, 50, True, ProjectileList(Counter).Rotate
                                     End If
                                 End If
                             End If
@@ -1338,18 +1338,18 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                     End If
                     
                 End If
-            Next j
+            next Counter
             
             'Check if it is close enough to the target to remove
-            For j = 1 To LastProjectile
-                If ProjectileList(j).Grh.GrhIndex Then
-                    If Abs(ProjectileList(j).X - ProjectileList(j).tX) < 20 Then
-                        If Abs(ProjectileList(j).Y - ProjectileList(j).tY) < 20 Then
+            For Counter = 1 To LastProjectile
+                If ProjectileList(Counter).Grh.GrhIndex Then
+                    If Abs(ProjectileList(Counter).X - ProjectileList(Counter).tX) < 20 Then
+                        If Abs(ProjectileList(Counter).Y - ProjectileList(Counter).tY) < 20 Then
                             Engine_Projectile_Erase j
                         End If
                     End If
                 End If
-            Next j
+            next Counter
             
         End If
     End If
@@ -1526,30 +1526,30 @@ Sub ShowNextFrame(ByVal DisplayFormTop As Integer, ByVal DisplayFormLeft As Inte
     
     
     '//Comercio
-    If frmComerciar.picInvNpc.Visible Then _
+    If frmComerciar.PicInvNpc.Visible Then _
         Call InvComNpc.DrawInv
         
-    If frmComerciar.picInvUser.Visible Then _
+    If frmComerciar.PicInvUser.Visible Then _
         Call InvComUsu.DrawInv
         
     
     '//Comercio entre usuarios
-    If frmComerciarUsu.picInvComercio.Visible Then _
+    If frmComerciarUsu.PicInvComercio.Visible Then _
         InvComUsu.DrawInv (1)
             
-    If frmComerciarUsu.picInvOfertaProp.Visible Then _
+    If frmComerciarUsu.PicInvOfertaProp.Visible Then _
         InvOfferComUsu(0).DrawInv (1)
             
-    If frmComerciarUsu.picInvOfertaOtro Then _
+    If frmComerciarUsu.PicInvOfertaOtro Then _
         InvOfferComUsu(1).DrawInv (1)
             
-    If frmComerciarUsu.picInvOroProp.Visible Then _
+    If frmComerciarUsu.PicInvOroProp.Visible Then _
         InvOroComUsu(0).DrawInv (1)
             
-    If frmComerciarUsu.picInvOroOfertaProp.Visible Then _
+    If frmComerciarUsu.PicInvOroOfertaProp.Visible Then _
         InvOroComUsu(1).DrawInv (1)
                 
-    If frmComerciarUsu.picInvOroOfertaOtro.Visible Then _
+    If frmComerciarUsu.PicInvOroOfertaOtro.Visible Then _
         InvOroComUsu(2).DrawInv (1)
         
         
@@ -1830,12 +1830,12 @@ Private Sub CharRender(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, B
         Call Dialogos.UpdateDialogPos(PixelOffsetX + .Body.HeadOffset.X, PixelOffsetY + .Body.HeadOffset.Y + OFFSET_HEAD, CharIndex) '34 son los pixeles del grh de la cabeza que quedan superpuestos al cuerpo
         
         Movement_Speed = 1
-        'Draw FX
+        'Draw FxGrh
         If .FxIndex <> 0 Then
-            Call DDrawTransGrhtoSurface(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY, 1, SetARGB_Alpha(MapData(.Pos.X, .Pos.Y).Engine_Light(), 180), 1, .Pos.X, .Pos.Y, True)
+            Call DDrawTransGrhtoSurface(.FxGrh, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY, 1, SetARGB_Alpha(MapData(.Pos.X, .Pos.Y).Engine_Light(), 180), 1, .Pos.X, .Pos.Y, True)
             
             'Check if animation is over
-            If .fX.Started = 0 Then _
+            If .FxGrh.Started = 0 Then _
                 .FxIndex = 0
         End If
         
@@ -1877,19 +1877,19 @@ Private Sub RenderName(ByVal CharIndex As Long, ByVal X As Integer, ByVal Y As I
     End With
 End Sub
 
-Public Sub SetCharacterFx(ByVal CharIndex As Integer, ByVal fX As Integer, ByVal Loops As Integer)
+Public Sub SetCharacterFx(ByVal CharIndex As Integer, ByVal FxGrh As Integer, ByVal Loops As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modify Date: 12/03/04
-'Sets an FX to the character.
+'Sets an fx to the character.
 '***************************************************
     With charlist(CharIndex)
-        .FxIndex = fX
+        .FxIndex = FxGrh
         
         If .FxIndex > 0 Then
-            Call InitGrh(.fX, FxData(fX).Animacion)
+            Call InitGrh(.FxGrh, FxData(FxGrh).Animacion)
         
-            .fX.Loops = Loops
+            .FxGrh.Loops = Loops
         End If
     End With
 End Sub

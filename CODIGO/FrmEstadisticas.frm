@@ -1026,18 +1026,18 @@ Private Const BAR_LEFT_POS As Integer = 361 'pixeles
 
 Public Sub Iniciar_Labels()
 'Iniciamos los labels con los valores de los atributos y los skills
-Dim i As Integer
+Dim Iterator As Integer
 Dim Ancho As Integer
 
-For i = 1 To NUMATRIBUTOS
-    Atri(i).Caption = UserAtributos(i)
+For Iterator = 1 To NUMATRIBUTOS
+    Atri(Iterator).Caption = UserAtributos(Iterator)
 Next
 
-For i = 1 To NUMSKILLS
-    Skills(i).Caption = UserSkills(i)
-    Ancho = IIf(PorcentajeSkills(i) = 0, ANCHO_BARRA, (100 - PorcentajeSkills(i)) / 100 * ANCHO_BARRA)
-    shpSkillsBar(i).Width = Ancho
-    shpSkillsBar(i).Left = BAR_LEFT_POS + ANCHO_BARRA - Ancho
+For Iterator = 1 To NUMSKILLS
+    Skills(Iterator).Caption = UserSkills(Iterator)
+    Ancho = IIf(PorcentajeSkills(Iterator) = 0, ANCHO_BARRA, (100 - PorcentajeSkills(Iterator)) / 100 * ANCHO_BARRA)
+    shpSkillsBar(Iterator).Width = Ancho
+    shpSkillsBar(Iterator).Left = BAR_LEFT_POS + ANCHO_BARRA - Ancho
 Next
 
 
@@ -1105,7 +1105,7 @@ Private Sub imgCerrar_Click()
 End Sub
 
 Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If imgCerrar.Tag = 1 Then
+    If IteratormgCerrar.Tag = 1 Then
         imgCerrar.Picture = LoadPicture(App.path & "\graficos\BotonCerrarApretadoEstadisticas.jpg")
         imgCerrar.Tag = 0
     End If

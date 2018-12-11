@@ -20,12 +20,12 @@ If Not Cartel Then
     Dim i As Integer, k As Integer, anti As Integer
     anti = 1
     k = 0
-    i = 0
-    Call DarFormato(Leyenda, i, k, anti)
-    i = 0
-    Do While LeyendaFormateada(i) <> "" And i < UBound(LeyendaFormateada)
+    Iterator = 0
+    Call DarFormato(Leyenda, Iterator, k, anti)
+    Iterator = 0
+    Do While LeyendaFormateada(Iterator) <> "" And i < UBound(LeyendaFormateada)
         
-       i = i + 1
+       Iterator = Iterator + 1
     Loop
     ReDim Preserve LeyendaFormateada(0 To i)
 Else
@@ -39,11 +39,11 @@ If anti + i <= Len(s) + 1 Then
         LeyendaFormateada(k) = mid$(s, anti, i + 1)
         k = k + 1
         anti = anti + i + 1
-        i = 0
+        Iterator = 0
     Else
-        i = i + 1
+        Iterator = Iterator + 1
     End If
-    Call DarFormato(s, i, k, anti)
+    Call DarFormato(s, Iterator, k, anti)
 End If
 End Function
 
@@ -55,11 +55,11 @@ Dim X As Integer, Y As Integer
     Y = YPosCartel + 20
     
     Call DDrawTransGrhIndextoSurface(textura, XPosCartel, YPosCartel, 0, Normal_RGBList(), 0, False)
-    Dim J As Integer, desp As Integer
+    Dim Counter As Integer, desp As Integer
     
-    For J = 0 To UBound(LeyendaFormateada)
-        'Fonts_Render_String LeyendaFormateada(j), X, Y + desp, -1, Settings.Engine_Font
-        DrawText X, Y + desp, LeyendaFormateada(J), -1
+    For Counter = 0 To UBound(LeyendaFormateada)
+        'Fonts_Render_String LeyendaFormateada(Counter), X, Y + desp, -1, Settings.Engine_Font
+        DrawText X, Y + desp, LeyendaFormateada(Counter), -1
         desp = desp + (frmMain.Font.Size) + 5
     Next
 End Sub

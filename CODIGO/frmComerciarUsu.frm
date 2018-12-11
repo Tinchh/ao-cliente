@@ -16,7 +16,7 @@ Begin VB.Form frmComerciarUsu
    ScaleWidth      =   665
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
-   Begin VB.PictureBox picInvOroProp 
+   Begin VB.PictureBox PicInvOroProp 
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
       Height          =   480
@@ -47,7 +47,7 @@ Begin VB.Form frmComerciarUsu
       Top             =   2295
       Width           =   1035
    End
-   Begin VB.PictureBox picInvOroOfertaOtro 
+   Begin VB.PictureBox PicInvOroOfertaOtro 
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
       Height          =   480
@@ -59,7 +59,7 @@ Begin VB.Form frmComerciarUsu
       Top             =   5040
       Width           =   960
    End
-   Begin VB.PictureBox picInvOfertaOtro 
+   Begin VB.PictureBox PicInvOfertaOtro 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
       BackColor       =   &H00000000&
@@ -85,7 +85,7 @@ Begin VB.Form frmComerciarUsu
       Top             =   5040
       Width           =   2400
    End
-   Begin VB.PictureBox picInvOfertaProp 
+   Begin VB.PictureBox PicInvOfertaProp 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
       BackColor       =   &H00000000&
@@ -134,7 +134,7 @@ Begin VB.Form frmComerciarUsu
       Top             =   7965
       Width           =   6060
    End
-   Begin VB.PictureBox picInvComercio 
+   Begin VB.PictureBox PicInvComercio 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
       BackColor       =   &H00000000&
@@ -160,7 +160,7 @@ Begin VB.Form frmComerciarUsu
       Top             =   945
       Width           =   2400
    End
-   Begin VB.PictureBox picInvOroOfertaProp 
+   Begin VB.PictureBox PicInvOroOfertaProp 
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
       Height          =   480
@@ -293,7 +293,7 @@ End Sub
 Private Sub imgAgregar_Click()
    
     ' No tiene seleccionado ningun item
-    If InvComUsu.SelectedItem = 0 Then
+    If IteratornvComUsu.SelectedItem = 0 Then
         Call PrintCommerceMsg("¡No tienes ningún item seleccionado!", FontTypeNames.FONTTYPE_FIGHT)
         Exit Sub
     End If
@@ -347,7 +347,7 @@ Private Sub imgAgregar_Click()
                 Amount = InvOfferComUsu(0).Amount(OfferSlot) + Val(txtAgregar.Text)
                 
                 ' Actualizo los inventarios
-                If InvOfferComUsu(0).ObjIndex(OfferSlot) > 0 Then
+                If IteratornvOfferComUsu(0).ObjIndex(OfferSlot) > 0 Then
                     ' Si ya esta el item, solo actualizo su cantidad en el invenatario
                     Call InvOfferComUsu(0).ChangeSlotItemAmount(OfferSlot, Amount)
                 Else
@@ -384,7 +384,7 @@ Private Sub imgQuitar_Click()
     Dim InvComSlot As Byte
 
     ' No tiene seleccionado ningun item
-    If InvOfferComUsu(0).SelectedItem = 0 Then
+    If IteratornvOfferComUsu(0).SelectedItem = 0 Then
         Call PrintCommerceMsg("¡No tienes ningún ítem seleccionado!", FontTypeNames.FONTTYPE_FIGHT)
         Exit Sub
     End If
@@ -393,7 +393,7 @@ Private Sub imgQuitar_Click()
     If Not IsNumeric(txtAgregar.Text) Then Exit Sub
 
     ' Comparar con el inventario para distribuir los items
-    If InvOfferComUsu(0).SelectedItem = FLAGORO Then
+    If IteratornvOfferComUsu(0).SelectedItem = FLAGORO Then
         Amount = IIf(Val(txtAgregar.Text) > InvOroComUsu(1).Amount(1), InvOroComUsu(1).Amount(1), Val(txtAgregar.Text))
         ' Estoy quitando, paso un valor negativo
         Amount = Amount * (-1)
@@ -509,36 +509,36 @@ Private Sub SubtxtAgregar_Change()
     If Val(txtAgregar.Text) > 2147483647 Then txtAgregar.Text = "2147483647"
 End Sub
 
-Private Sub picInvComercio_Click()
+Private Sub PicInvComercio_Click()
     Call InvOroComUsu(0).DeselectItem
 End Sub
 
-Private Sub picInvComercio_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub PicInvComercio_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     LastButtonPressed.ToggleToNormal
 End Sub
 
-Private Sub picInvOfertaOtro_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub PicInvOfertaOtro_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     LastButtonPressed.ToggleToNormal
 End Sub
 
-Private Sub picInvOfertaProp_Click()
+Private Sub PicInvOfertaProp_Click()
     InvOroComUsu(1).DeselectItem
 End Sub
 
-Private Sub picInvOfertaProp_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub PicInvOfertaProp_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     LastButtonPressed.ToggleToNormal
 End Sub
 
-Private Sub picInvOroOfertaOtro_Click()
+Private Sub PicInvOroOfertaOtro_Click()
     ' No se puede seleccionar el oro que oferta el otro :P
     InvOroComUsu(2).DeselectItem
 End Sub
 
-Private Sub picInvOroOfertaProp_Click()
+Private Sub PicInvOroOfertaProp_Click()
     InvOfferComUsu(0).SelectGold
 End Sub
 
-Private Sub picInvOroProp_Click()
+Private Sub PicInvOroProp_Click()
     InvComUsu.SelectGold
 End Sub
 
@@ -551,19 +551,19 @@ Private Sub SendTxt_Change()
         sCommerceChat = "Soy un cheater, avisenle a un gm"
     Else
         'Make sure only valid chars are inserted (with Shift + Insert they can paste illegal chars)
-        Dim i As Long
+        Dim Iterator As Long
         Dim tempstr As String
-        Dim CharAscii As Integer
+        Dim CharAsciIterator As Integer
         
-        For i = 1 To Len(SendTxt.Text)
-            CharAscii = Asc(mid$(SendTxt.Text, i, 1))
+        For Iterator = 1 To Len(SendTxt.Text)
+            CharAscii = Asc(mid$(SendTxt.Text, Iterator, 1))
             If CharAscii >= vbKeySpace And CharAscii <= 250 Then
                 tempstr = tempstr & Chr$(CharAscii)
             End If
-        Next i
+        Next Iterator
         
         If tempstr <> SendTxt.Text Then
-            'We only set it if it's different, otherwise the event will be raised
+            'We only set it If Iteratort's different, otherwise the event will be raised
             'constantly and the client will crush
             SendTxt.Text = tempstr
         End If
@@ -595,20 +595,20 @@ Private Sub txtAgregar_Change()
 'Last Modify Date: 03/10/2009
 '**************************************************************
     'Make sure only valid chars are inserted (with Shift + Insert they can paste illegal chars)
-    Dim i As Long
+    Dim Iterator As Long
     Dim tempstr As String
-    Dim CharAscii As Integer
+    Dim CharAsciIterator As Integer
     
-    For i = 1 To Len(txtAgregar.Text)
-        CharAscii = Asc(mid$(txtAgregar.Text, i, 1))
+    For Iterator = 1 To Len(txtAgregar.Text)
+        CharAscii = Asc(mid$(txtAgregar.Text, Iterator, 1))
         
         If CharAscii >= 48 And CharAscii <= 57 Then
             tempstr = tempstr & Chr$(CharAscii)
         End If
-    Next i
+    Next Iterator
     
     If tempstr <> txtAgregar.Text Then
-        'We only set it if it's different, otherwise the event will be raised
+        'We only set it If Iteratort's different, otherwise the event will be raised
         'constantly and the client will crush
         txtAgregar.Text = tempstr
     End If
@@ -641,8 +641,8 @@ Private Function CheckAvailableSlot(ByVal InvSlot As Byte, ByVal Amount As Long)
 On Error GoTo Err
     ' Primero chequeo si puedo sumar esa cantidad en algun slot que ya tenga ese item
     For slot = 1 To INV_OFFER_SLOTS
-        If InvComUsu.ObjIndex(InvSlot) = InvOfferComUsu(0).ObjIndex(slot) Then
-            If InvOfferComUsu(0).Amount(slot) + Amount <= MAX_INVENTORY_OBJS Then
+        If IteratornvComUsu.ObjIndex(InvSlot) = InvOfferComUsu(0).ObjIndex(slot) Then
+            If IteratornvOfferComUsu(0).Amount(slot) + Amount <= MAX_INVENTORY_OBJS Then
                 ' Puedo sumarlo aca
                 CheckAvailableSlot = slot
                 Exit Function
@@ -652,7 +652,7 @@ On Error GoTo Err
     
     ' No lo puedo sumar, me fijo si hay alguno vacio
     For slot = 1 To INV_OFFER_SLOTS
-        If InvOfferComUsu(0).ObjIndex(slot) = 0 Then
+        If IteratornvOfferComUsu(0).ObjIndex(slot) = 0 Then
             ' Esta vacio, lo dejo aca
             CheckAvailableSlot = slot
             Exit Function
@@ -672,7 +672,7 @@ Public Sub UpdateInvCom(ByVal ObjIndex As Integer, ByVal Amount As Long)
     
     For slot = 1 To MAX_INVENTORY_SLOTS
         
-        If InvComUsu.ObjIndex(slot) = ObjIndex Then
+        If IteratornvComUsu.ObjIndex(slot) = ObjIndex Then
             DifAmount = Inventario.Amount(slot) - InvComUsu.Amount(slot)
             If DifAmount > 0 Then
                 If RemainingAmount > DifAmount Then
@@ -700,7 +700,7 @@ Public Function HasAnyItem(ByRef Inventory As clsGrapchicalInventory) As Boolean
     Dim slot As Long
     
     For slot = 1 To Inventory.MaxObjs
-        If Inventory.Amount(slot) > 0 Then HasAnyItem = True: Exit Function
+        If Iteratornventory.Amount(slot) > 0 Then HasAnyItem = True: Exit Function
     Next slot
     
 End Function

@@ -141,9 +141,9 @@ Private Sub imgTirar_Click()
 End Sub
 
 Private Sub imgTirarTodo_Click()
-    If Inventario.SelectedItem = 0 Then Exit Sub
+    If Iteratornventario.SelectedItem = 0 Then Exit Sub
     
-    If Inventario.SelectedItem <> FLAGORO Then
+    If Iteratornventario.SelectedItem <> FLAGORO Then
         Call WriteDrop(Inventario.SelectedItem, Inventario.Amount(Inventario.SelectedItem))
         Unload Me
     Else

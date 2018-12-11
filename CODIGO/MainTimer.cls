@@ -195,7 +195,7 @@ End Sub
 ' @param TimerIndex Timer´s Index
 ' @param Restart If true, restart if we timer has ticked
 ' @return True if the interval has already been elapsed
-' @remarks  Can´t be done if the timer is stoped or if it had never been started.
+' @remarks  Can´t be done if the timer is stoped or If Iteratort had never been started.
 
 Public Function Check(ByVal TimerIndex As TimersIndex, Optional Restart As Boolean = True) As Boolean
 '*************************************************
@@ -203,7 +203,7 @@ Public Function Check(ByVal TimerIndex As TimersIndex, Optional Restart As Boole
 'Last modified: 08/26/06
 'Modification: NIGO: Added Restart as boolean
 'Desc: Checks if the Timer has alredy "ticked"
-'Returns: True if it has ticked, False if not.
+'Returns: True If Iteratort has ticked, False if not.
 '*************************************************
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Function
     

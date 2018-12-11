@@ -517,7 +517,7 @@ On Error GoTo Err:
     Dim sI As String
     Dim c As cDIBSection
     Set c = New cDIBSection
-    Dim i As Long
+    Dim Iterator As Long
     Dim hdcc As Long
     
     Dim dirFile As String

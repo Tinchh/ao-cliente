@@ -23,12 +23,12 @@ Public Sub Reset_Party()
 'Reset all of Party Members
 '***************************************************
     Dim i As Byte
-        For i = 1 To 5
-            PartyMembers(i).ExpParty = 0
-            PartyMembers(i).Head = 0
-            PartyMembers(i).Lvl = 0
-            PartyMembers(i).Name = vbNullString
-        Next i
+        For Iterator = 1 To 5
+            PartyMembers(Iterator).ExpParty = 0
+            PartyMembers(Iterator).Head = 0
+            PartyMembers(Iterator).Lvl = 0
+            PartyMembers(Iterator).Name = vbNullString
+        Next Iterator
 End Sub
 
 Public Sub Draw_Party_Members()
@@ -39,16 +39,16 @@ Public Sub Draw_Party_Members()
 '***************************************************
         Dim i As Byte, Count As Byte
         Count = 0
-            For i = 1 To 5
-                If PartyMembers(i).Name <> "" Then
+            For Iterator = 1 To 5
+                If PartyMembers(Iterator).Name <> "" Then
                     Count = Count + 1
                     Engine_Draw_Box 410, 20 + (Count - 1) * 50 + 5, 120, 40, D3DColorARGB(100, 0, 0, 0)
-                    DDrawTransGrhIndextoSurface HeadData(PartyMembers(i).Head).Head(3).GrhIndex, 410, 20 + (Count - 1) * 50 + 35, 1, Normal_RGBList(), 0, True
-                    'Fonts_Render_String PartyMembers(i).Name, 440, 20 + (Count - 1) * 50 + 10, D3DColorARGB(150, 255, 255, 255), 2
-                    'Fonts_Render_String "Nivel: " & PartyMembers(i).Lvl, 440, 20 + (Count - 1) * 50 + 20, D3DColorARGB(150, 255, 255, 255), 2
-                    'Fonts_Render_String "Exp: " & PartyMembers(i).ExpParty, 440, 20 + (Count - 1) * 50 + 30, D3DColorARGB(150, 255, 255, 255), 2
+                    DDrawTransGrhIndextoSurface HeadData(PartyMembers(Iterator).Head).Head(3).GrhIndex, 410, 20 + (Count - 1) * 50 + 35, 1, Normal_RGBList(), 0, True
+                    'Fonts_Render_String PartyMembers(Iterator).Name, 440, 20 + (Count - 1) * 50 + 10, D3DColorARGB(150, 255, 255, 255), 2
+                    'Fonts_Render_String "Nivel: " & PartyMembers(Iterator).Lvl, 440, 20 + (Count - 1) * 50 + 20, D3DColorARGB(150, 255, 255, 255), 2
+                    'Fonts_Render_String "Exp: " & PartyMembers(Iterator).ExpParty, 440, 20 + (Count - 1) * 50 + 30, D3DColorARGB(150, 255, 255, 255), 2
                 End If
-            Next i
+            Next Iterator
             
             If Count <> 0 Then
                 'Fonts_Render_String "Miembros de Party", 405, 5, D3DColorARGB(100, 255, 128, 0), 3

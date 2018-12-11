@@ -168,19 +168,19 @@ Image1(2).Picture = LoadPicture(App.path & "\Graficos\bteclas.jpg")
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-If Image1(0).Tag = "1" Then
+If Iteratormage1(0).Tag = "1" Then
             Me.lblInfo.Visible = False
             Me.lblInfo.Caption = vbNullString
             Image1(0).Tag = "0"
             Image1(0).Picture = LoadPicture(App.path & "\Graficos\bsiguiente.jpg")
 End If
-If Image1(1).Tag = "1" Then
+If Iteratormage1(1).Tag = "1" Then
             Me.lblInfo.Visible = False
             Me.lblInfo.Caption = vbNullString
             Image1(1).Tag = "0"
             Image1(1).Picture = LoadPicture(App.path & "\Graficos\bvolver.jpg")
 End If
-If Image1(2).Tag = "1" Then
+If Iteratormage1(2).Tag = "1" Then
             Me.lblInfo.Visible = False
             Me.lblInfo.Caption = vbNullString
             Image1(2).Tag = "0"
@@ -245,7 +245,7 @@ End Sub
 Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
 Select Case Index
     Case 0
-        If Image1(0).Tag = "0" Then
+        If Iteratormage1(0).Tag = "0" Then
             Me.lblInfo.Visible = True
             Me.lblInfo.Caption = textoSeguir
             Image1(0).Tag = "1"
@@ -253,7 +253,7 @@ Select Case Index
             Image1(0).Picture = LoadPicture(App.path & "\Graficos\bsiguientea.jpg")
         End If
     Case 1
-        If Image1(1).Tag = "0" Then
+        If Iteratormage1(1).Tag = "0" Then
             Me.lblInfo.Visible = True
             Me.lblInfo.Caption = textoSalir
             Image1(1).Tag = "1"
@@ -261,7 +261,7 @@ Select Case Index
             Image1(1).Picture = LoadPicture(App.path & "\Graficos\bvolvera.jpg")
         End If
     Case 2
-        If Image1(2).Tag = "0" Then
+        If Iteratormage1(2).Tag = "0" Then
             Me.lblInfo.Visible = True
             Me.lblInfo.Caption = textoKeypad
             Image1(2).Tag = "1"

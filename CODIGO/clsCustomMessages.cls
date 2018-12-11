@@ -70,22 +70,22 @@ Private Sub Class_Initialize()
 '***************************************************
 On Error GoTo ErrHandler
     Dim handle As Integer
-    Dim i As Long
+    Dim Iterator As Long
     
     'Load custom messages
     handle = FreeFile()
     
     Open App.path & MESSAGE_FILE_PATH For Input As handle
     
-    Do While (i < MESSAGE_COUNT) And (Not EOF(handle))
-        Line Input #handle, CustomMessages(i)
+    Do While (Iterator < MESSAGE_COUNT) And (Not EOF(handle))
+        Line Input #handle, CustomMessages(Iterator)
         
         'Purge invalid messages
-        If Not MessageIsValid(CustomMessages(i)) Then
-            CustomMessages(i) = vbNullString
+        If Not MessageIsValid(CustomMessages(Iterator)) Then
+            CustomMessages(Iterator) = vbNullString
         End If
         
-        i = i + 1
+        Iterator = Iterator + 1
     Loop
     
     Close handle
@@ -105,7 +105,7 @@ Private Sub Class_Terminate()
 'Stores all messages back into config file for later use.
 '***************************************************
     Dim handle As Integer
-    Dim i As Long
+    Dim Iterator As Long
     Dim directories() As String
     Dim path As String
     
@@ -113,22 +113,22 @@ Private Sub Class_Terminate()
     directories = Split(MESSAGE_FILE_PATH, "/")
     path = App.path
     
-    For i = 0 To UBound(directories()) - 1
-        path = path & "/" & directories(i)
+    For Iterator = 0 To UBound(directories()) - 1
+        path = path & "/" & directories(Iterator)
         
         If LenB(Dir(path, vbDirectory)) = 0 Then
             Call MkDir(path)
         End If
-    Next i
+    Next Iterator
     
     'Serialize custom messages
     handle = FreeFile()
     
     Open App.path & MESSAGE_FILE_PATH For Output As handle
     
-    For i = 0 To MESSAGE_COUNT - 1
-        Print #handle, CustomMessages(i)
-    Next i
+    For Iterator = 0 To MESSAGE_COUNT - 1
+        Print #handle, CustomMessages(Iterator)
+    Next Iterator
     
     Close handle
 End Sub
@@ -206,7 +206,7 @@ Private Function MessageIsValid(ByRef msg As String) As Boolean
 'it was causing problems and detected as many messages
 'as wrong with nothing bad on them
 '***************************************************
-    Dim i As Long
+    Dim Iterator As Long
     Dim Char As String * 1
     Dim ascii As Byte
     
@@ -219,8 +219,8 @@ Private Function MessageIsValid(ByRef msg As String) As Boolean
         Exit Function
     End If
     
-    For i = 1 To Len(msg)
-        Char = mid$(msg, i, 1)
+    For Iterator = 1 To Len(msg)
+        Char = mid$(msg, Iterator, 1)
         ascii = Asc(Char)
         
         'check for invalid chars...
@@ -237,7 +237,7 @@ Private Function MessageIsValid(ByRef msg As String) As Boolean
           And Char <> "Ù" And Char <> "ñ" And Char <> "Ñ" And Char <> "¡" And Char <> "¿" Then
             Exit Function
         End If
-    Next i
+    Next Iterator
     
     'Discard extremely long messages
     If Len(msg) > MAX_MESSAGE_LENGTH Then Exit Function

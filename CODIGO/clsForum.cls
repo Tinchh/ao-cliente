@@ -164,21 +164,21 @@ Public Function GetNroSticky(ByVal ForumType As eForumType) As Byte
 End Function
 
 Private Sub MoveArray(ByVal ForumType As eForumType, ByVal Sticky As Boolean)
-Dim i As Long
+Dim Iterator As Long
 
 With Foros(ForumType)
     If Sticky Then
-        For i = CantStickys(ForumType) To 2 Step -1
-            .StickyTitle(i) = .StickyTitle(i - 1)
-            .StickyPost(i) = .StickyPost(i - 1)
-            .StickyAuthor(i) = .StickyAuthor(i - 1)
-        Next i
+        For Iterator = CantStickys(ForumType) To 2 Step -1
+            .StickyTitle(Iterator) = .StickyTitle(i - 1)
+            .StickyPost(Iterator) = .StickyPost(i - 1)
+            .StickyAuthor(Iterator) = .StickyAuthor(i - 1)
+        Next Iterator
     Else
-        For i = CantPosts(ForumType) To 2 Step -1
-            .GeneralTitle(i) = .GeneralTitle(i - 1)
-            .GeneralPost(i) = .GeneralPost(i - 1)
-            .GeneralAuthor(i) = .GeneralAuthor(i - 1)
-        Next i
+        For Iterator = CantPosts(ForumType) To 2 Step -1
+            .GeneralTitle(Iterator) = .GeneralTitle(i - 1)
+            .GeneralPost(Iterator) = .GeneralPost(i - 1)
+            .GeneralAuthor(Iterator) = .GeneralAuthor(i - 1)
+        Next Iterator
     End If
 End With
 End Sub

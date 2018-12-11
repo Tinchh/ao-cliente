@@ -37,37 +37,37 @@ Private Sub Class_Initialize()
 End Sub
  
 Public Sub LoadSoundMapInfo()
-    Dim i As Integer
-    Dim J As Integer
+    Dim Iterator As Integer
+    Dim Counter As Integer
     Dim Temps As String
     Dim MAPFILE As String
    
     MAPFILE = App.path & "\Mapas\" & "MAPA"
    
-    For i = 1 To NumMaps
-        Temps = GetVar(MAPFILE & i & ".dat", "SONIDOS", "Cantidad")
+    For Iterator = 1 To NumMaps
+        Temps = GetVar(MAPFILE & Iterator & ".dat", "SONIDOS", "Cantidad")
        
         If IsNumeric(Temps) Then
-            p_Mapas(i).cantidad = Val(Temps)
+            p_Mapas(Iterator).cantidad = Val(Temps)
            
-            ReDim p_Mapas(i).flags(1 To p_Mapas(i).cantidad) As Long
-            ReDim p_Mapas(i).Probabilidad(1 To p_Mapas(i).cantidad) As Single
-            ReDim p_Mapas(i).SoundIndex(1 To p_Mapas(i).cantidad) As Integer
+            ReDim p_Mapas(Iterator).flags(1 To p_Mapas(Iterator).cantidad) As Long
+            ReDim p_Mapas(Iterator).Probabilidad(1 To p_Mapas(Iterator).cantidad) As Single
+            ReDim p_Mapas(Iterator).SoundIndex(1 To p_Mapas(Iterator).cantidad) As Integer
            
-            For J = 1 To p_Mapas(i).cantidad
-                p_Mapas(i).flags(J) = Val(GetVar(MAPFILE & i & ".dat", "SONIDO" & J, "Flags"))
-                p_Mapas(i).Probabilidad(J) = Val(GetVar(MAPFILE & i & ".dat", "SONIDO" & J, "Probabilidad"))
-                p_Mapas(i).SoundIndex(J) = Val(GetVar(MAPFILE & i & ".dat", "SONIDO" & J, "Sonido"))
-            Next J
+            For Counter = 1 To p_Mapas(Iterator).cantidad
+                p_Mapas(Iterator).flags(Counter) = Val(GetVar(MAPFILE & Iterator & ".dat", "SONIDO" & Counter, "Flags"))
+                p_Mapas(Iterator).Probabilidad(Counter) = Val(GetVar(MAPFILE & Iterator & ".dat", "SONIDO" & Counter, "Probabilidad"))
+                p_Mapas(Iterator).SoundIndex(Counter) = Val(GetVar(MAPFILE & Iterator & ".dat", "SONIDO" & Counter, "Sonido"))
+            Next Counter
         Else
-            p_Mapas(i).cantidad = 0
+            p_Mapas(Iterator).cantidad = 0
         End If
-    Next i
+    Next Iterator
 End Sub
  
 Public Sub ReproducirSonidosDeMapas()
 'Nos fijamos el mapa del personaje, sus sonidos y lo aplicamos al mapa. Simple y óptimo
-    Dim i As Long
+    Dim Iterator As Long
     Dim SonidoMapa As Byte
     Dim posX As Byte
     Dim posY As Byte
@@ -76,21 +76,21 @@ Public Sub ReproducirSonidosDeMapas()
     posX = RandomNumber(UserPos.X, UserPos.X + 20)
     posY = RandomNumber(UserPos.Y, UserPos.Y + 20)
    
-    i = UserMap
+    Iterator = UserMap
    
-        If p_Mapas(i).cantidad > 0 Then
-            SonidoMapa = RandomNumber(1, p_Mapas(i).cantidad)
-            If RandomNumber(1, 100) <= p_Mapas(i).Probabilidad(SonidoMapa) Then
+        If p_Mapas(Iterator).cantidad > 0 Then
+            SonidoMapa = RandomNumber(1, p_Mapas(Iterator).cantidad)
+            If RandomNumber(1, 100) <= p_Mapas(Iterator).Probabilidad(SonidoMapa) Then
                 'tocarlo
                 If bRain Then
-                    If p_Mapas(i).flags(SonidoMapa) Xor p_eSoundFlags.Lluvia Then
+                    If p_Mapas(Iterator).flags(SonidoMapa) Xor p_eSoundFlags.Lluvia Then
                        
-                        Call Audio.PlayWave(p_Mapas(i).SoundIndex(SonidoMapa) & ".wav", posX, posY)
+                        Call Audio.PlayWave(p_Mapas(Iterator).SoundIndex(SonidoMapa) & ".wav", posX, posY)
                     End If
                 Else
-                    If p_Mapas(i).flags(SonidoMapa) Xor p_eSoundFlags.ninguna Then
+                    If p_Mapas(Iterator).flags(SonidoMapa) Xor p_eSoundFlags.ninguna Then
                        
-                        Call Audio.PlayWave(p_Mapas(i).SoundIndex(SonidoMapa) & ".wav", posX, posY)
+                        Call Audio.PlayWave(p_Mapas(Iterator).SoundIndex(SonidoMapa) & ".wav", posX, posY)
                     End If
                 End If
             End If

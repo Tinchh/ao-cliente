@@ -838,7 +838,7 @@ Private Function Compare_Datas(ByRef data1() As Byte, ByRef data2() As Byte) As 
 End Function
 
 ''
-' Retrieves the next InfoHeader.
+' Retrieves the Next IteratornfoHeader.
 '
 ' @param    ResourceFile A handler to the resource file.
 ' @param    FileHead The reource file header.
@@ -856,7 +856,7 @@ Private Function ReadNext_InfoHead(ByRef ResourceFile As Integer, ByRef FileHead
 '*****************************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
 'Last Modify Date: 08/24/2007
-'Reads the next InfoHeader
+'Reads the Next IteratornfoHeader
 '*****************************************************************
 
     If ReadFiles < FileHead.lngNumFiles Then
@@ -886,7 +886,7 @@ Public Function GetNext_Bitmap(ByRef ResourcePath As String, ByRef ReadFiles As 
 '*****************************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
 'Last Modify Date: 09/10/2012 - ^[GS]^
-'Reads the next InfoHeader
+'Reads the Next IteratornfoHeader
 '*****************************************************************
 On Error Resume Next
 

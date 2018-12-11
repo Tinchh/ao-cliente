@@ -34,7 +34,7 @@ Attribute VB_Name = "Mod_General"
 Option Explicit
 
 #If False Then 'to fix VB fucking up the var names
-    Dim status, Nombre, PicInv, f, obj, j As String
+    Dim status, Nombre, PicInv As String
 #End If
 
 Public iplst As String
@@ -79,7 +79,7 @@ Public Function GetRawName(ByRef sName As String) As String
 'Author: ZaMa
 'Last Modify Date: 13/01/2010
 'Last Modified By: -
-'Returns the char name without the clan name (if it has it).
+'Returns the char name without the clan name (If Iteratort has it).
 '***************************************************
 
     Dim Pos As Integer
@@ -125,11 +125,11 @@ On Error Resume Next
         Exit Sub
     End If
     
-    Dim i As Long
+    Dim Iterator As Long
     
-    For i = 0 To 47 '48, 49 y 50 reservados para atacables, ciudadano y criminal
-        ColoresPJ(i) = D3DColorXRGB(GetVar(archivoC, CStr(i), "R"), GetVar(archivoC, CStr(i), "G"), GetVar(archivoC, CStr(i), "B"))
-    Next i
+    For Iterator = 0 To 47 '48, 49 y 50 reservados para atacables, ciudadano y criminal
+        ColoresPJ(Iterator) = D3DColorXRGB(GetVar(archivoC, CStr(Iterator), "R"), GetVar(archivoC, CStr(Iterator), "G"), GetVar(archivoC, CStr(Iterator), "B"))
+    Next Iterator
     
     '   Crimi
     ColoresPJ(50) = D3DColorXRGB(GetVar(archivoC, "CR", "R"), GetVar(archivoC, "CR", "G"), GetVar(archivoC, "CR", "B"))
@@ -219,17 +219,17 @@ End Sub
 
 Function AsciiValidos(ByVal cad As String) As Boolean
     Dim car As Byte
-    Dim i As Long
+    Dim Iterator As Long
     
     cad = LCase$(cad)
     
-    For i = 1 To Len(cad)
-        car = Asc(mid$(cad, i, 1))
+    For Iterator = 1 To Len(cad)
+        car = Asc(mid$(cad, Iterator, 1))
         
         If ((car < 97 Or car > 122) Or car = Asc("º")) And (car <> 255) And (car <> 32) Then
             Exit Function
         End If
-    Next i
+    Next Iterator
     
     AsciiValidos = True
 End Function
@@ -237,7 +237,7 @@ End Function
 Function CheckUserData(ByVal checkemail As Boolean) As Boolean
     'Validamos los datos del user
     Dim LoopC As Long
-    Dim CharAscii As Integer
+    Dim CharAsciIterator As Integer
     
     If checkemail And LenB(UserEmail) = 0 Then
         MsgBox ("Direccion de email invalida")
@@ -491,7 +491,7 @@ Sub SwitchMap(ByVal Map As Integer)
     Dim ByFlags As Byte
     Dim handle As Integer
     Dim CharIndex As Integer
-    Dim obj       As Integer
+    Dim ObjetoInteger As Integer
     
     handle = FreeFile()
     
@@ -557,9 +557,9 @@ Sub SwitchMap(ByVal Map As Integer)
             End If
 
             'Erase OBJs
-            obj = Map_PosExitsObject(X, Y)
+            ObjetoInteger = Map_PosExitsObject(X, Y)
 
-            If (obj > 0) Then
+            If (ObjetoInteger > 0) Then
                 Call Map_DestroyObject(X, Y)
             End If
             
@@ -590,17 +590,17 @@ Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As
 'Author: Juan Martin Sotuyo Dodero (Maraxus)
 'Last Modify Date: 11/15/2004
 '*****************************************************************
-    Dim i As Long
+    Dim Iterator As Long
     Dim lastPos As Long
     Dim CurrentPos As Long
     Dim delimiter As String * 1
     
     delimiter = Chr$(SepASCII)
     
-    For i = 1 To Pos
+    For Iterator = 1 To Pos
         lastPos = CurrentPos
         CurrentPos = InStr(lastPos + 1, Text, delimiter, vbBinaryCompare)
-    Next i
+    Next Iterator
     
     If CurrentPos = 0 Then
         ReadField = mid$(Text, lastPos + 1, Len(Text) - lastPos)
@@ -654,14 +654,14 @@ Sub WriteClientVer()
 End Sub
 
 Public Function IsIp(ByVal Ip As String) As Boolean
-    Dim i As Long
+    Dim Iterator As Long
     
-    For i = 1 To UBound(ServersLst)
-        If ServersLst(i).Ip = Ip Then
+    For Iterator = 1 To UBound(ServersLst)
+        If ServersLst(Iterator).Ip = Ip Then
             IsIp = True
             Exit Function
         End If
-    Next i
+    Next Iterator
 End Function
 
 Public Sub CargarServidores()
@@ -674,7 +674,7 @@ Public Sub CargarServidores()
 On Error GoTo errorH
     Dim f As String
     Dim c As Integer
-    Dim i As Long
+    Dim Iterator As Long
     
     f = App.path & "\init\sinfo.dat"
     c = Val(GetVar(f, "INIT", "Cant"))
@@ -682,12 +682,12 @@ On Error GoTo errorH
     frmConnect.lstServers.Clear
     
     ReDim ServersLst(1 To c) As tServerInfo
-    For i = 1 To c
-        ServersLst(i).Desc = GetVar(f, "S" & i, "Desc")
-        ServersLst(i).Ip = Trim$(GetVar(f, "S" & i, "Ip"))
-        ServersLst(i).Puerto = CInt(GetVar(f, "S" & i, "PJ"))
-        frmConnect.lstServers.AddItem (ServersLst(i).Desc)
-    Next i
+    For Iterator = 1 To c
+        ServersLst(Iterator).Desc = GetVar(f, "S" & Iterator, "Desc")
+        ServersLst(Iterator).Ip = Trim$(GetVar(f, "S" & Iterator, "Ip"))
+        ServersLst(Iterator).Puerto = CInt(GetVar(f, "S" & Iterator, "PJ"))
+        frmConnect.lstServers.AddItem (ServersLst(Iterator).Desc)
+    Next Iterator
     CurServer = 1
 
 Exit Sub
@@ -840,7 +840,7 @@ Private Sub LoadInitialConfig()
 '15/03/2011: ZaMa - Initialize classes lazy way.
 '***************************************************
 
-    Dim i As Long
+    Dim Iterator As Long
 
     frmCargando.Show
     frmCargando.Refresh
@@ -1068,21 +1068,21 @@ Public Sub LeerLineaComandos()
 '
 '*************************************************
     Dim T() As String
-    Dim i As Long
+    Dim Iterator As Long
     
     Dim UpToDate As Boolean
     Dim Patch As String
     
     'Parseo los comandos
     T = Split(Command, " ")
-    For i = LBound(T) To UBound(T)
-        Select Case UCase$(T(i))
+    For Iterator = LBound(T) To UBound(T)
+        Select Case UCase$(T(Iterator))
             Case "/NORES" 'no cambiar la resolucion
                 NoRes = True
             Case "/UPTODATE"
                 UpToDate = True
         End Select
-    Next i
+    Next Iterator
     
 #If Testeo = 0 Then
     Call AoUpdate(UpToDate, NoRes)
@@ -1354,13 +1354,13 @@ getDexterityColor = RGB(255, m * UserAgilidad, 0)
 End Function
 
 Public Function getCharIndexByName(ByVal Name As String) As Integer
-Dim i As Long
-For i = 1 To LastChar
-    If charlist(i).Nombre = Name Then
+Dim Iterator As Long
+For Iterator = 1 To LastChar
+    If charlist(Iterator).Nombre = Name Then
         getCharIndexByName = i
         Exit Function
     End If
-Next i
+Next Iterator
 End Function
 
 Public Function EsAnuncio(ByVal ForumType As Byte) As Boolean
@@ -1461,10 +1461,10 @@ Public Sub ResetAllInfo()
     Call CleanDialogs
 
     'Reset some char variables...
-    Dim i As Long
-    For i = 1 To LastChar
-        charlist(i).invisible = False
-    Next i
+    Dim Counter As Long
+    For Counter = 1 To LastChar
+        charlist(Counter).invisible = False
+    Next Counter
 
     ' Reset stats
     UserClase = 0
@@ -1476,14 +1476,14 @@ Public Sub ResetAllInfo()
     Alocados = 0
     
     ' Reset skills
-    For i = 1 To NUMSKILLS
-        UserSkills(i) = 0
-    Next i
+    For Counter = 1 To NUMSKILLS
+        UserSkills(Counter) = 0
+    Next Counter
 
     ' Reset attributes
-    For i = 1 To NUMATRIBUTOS
-        UserAtributos(i) = 0
-    Next i
+    For Counter = 1 To NUMATRIBUTOS
+        UserAtributos(Counter) = 0
+    Next Counter
     
     ' Clear inventory slots
     Inventario.ClearAllSlots
@@ -1494,25 +1494,27 @@ Public Sub ResetAllInfo()
 End Sub
 
 Public Function DevolverNombreHechizo(ByVal Index As Byte) As String
-Dim i As Long
+    Dim Counter As Long
  
-    For i = 1 To NumHechizos
-        If i = Index Then
-            DevolverNombreHechizo = Hechizos(i).Nombre
+    For Counter = 1 To NumHechizos
+        If Counter = Index Then
+            DevolverNombreHechizo = Hechizos(Counter).Nombre
             Exit Function
         End If
-    Next i
+    Next Counter
 End Function
+
 Public Function DevolverIndexHechizo(ByVal Nombre As String) As Byte
-Dim i As Long
+    Dim Counter As Long
  
-    For i = 1 To NumHechizos
-        If Hechizos(i).Nombre = Nombre Then
-            DevolverIndexHechizo = i
+    For Counter = 1 To NumHechizos
+        If Hechizos(Counter).Nombre = Nombre Then
+            DevolverIndexHechizo = Counter
             Exit Function
         End If
-    Next i
+    Next Counter
 End Function
+
 Public Sub CargarHechizos()
 '********************************
 'Author: Shak
@@ -1521,32 +1523,32 @@ Public Sub CargarHechizos()
 '********************************
 On Error GoTo errorH
     Dim PathName As String
-    Dim j As Long
+    Dim Counter As Long
  
     PathName = App.path & "\init\Hechizos.dat"
     NumHechizos = Val(GetVar(PathName, "INIT", "NumHechizos"))
  
     ReDim Hechizos(1 To NumHechizos) As tHechizos
-    For j = 1 To NumHechizos
-        With Hechizos(j)
-            .Desc = GetVar(PathName, "HECHIZO" & j, "Desc")
-            .PalabrasMagicas = GetVar(PathName, "HECHIZO" & j, "PalabrasMagicas")
-            .Nombre = GetVar(PathName, "HECHIZO" & j, "Nombre")
-            .SkillRequerido = GetVar(PathName, "HECHIZO" & j, "MinSkill")
+    For Counter = 1 To NumHechizos
+        With Hechizos(Counter)
+            .Desc = GetVar(PathName, "HECHIZO" & Counter, "Desc")
+            .PalabrasMagicas = GetVar(PathName, "HECHIZO" & Counter, "PalabrasMagicas")
+            .Nombre = GetVar(PathName, "HECHIZO" & Counter, "Nombre")
+            .SkillRequerido = GetVar(PathName, "HECHIZO" & Counter, "MinSkill")
          
-            If j <> 38 And j <> 39 Then
-                .EnergiaRequerida = GetVar(PathName, "HECHIZO" & j, "StaRequerido")
+            If Counter <> 38 And Counter <> 39 Then
+                .EnergiaRequerida = GetVar(PathName, "HECHIZO" & Counter, "StaRequerido")
                  
-                .HechiceroMsg = GetVar(PathName, "HECHIZO" & j, "HechizeroMsg")
-                .ManaRequerida = GetVar(PathName, "HECHIZO" & j, "ManaRequerido")
+                .HechiceroMsg = GetVar(PathName, "HECHIZO" & Counter, "HechizeroMsg")
+                .ManaRequerida = GetVar(PathName, "HECHIZO" & Counter, "ManaRequerido")
              
              
-                .PropioMsg = GetVar(PathName, "HECHIZO" & j, "PropioMsg")
+                .PropioMsg = GetVar(PathName, "HECHIZO" & Counter, "PropioMsg")
              
-                .TargetMsg = GetVar(PathName, "HECHIZO" & j, "TargetMsg")
+                .TargetMsg = GetVar(PathName, "HECHIZO" & Counter, "TargetMsg")
             End If
         End With
-    Next j
+    Next Counter
  
 Exit Sub
  

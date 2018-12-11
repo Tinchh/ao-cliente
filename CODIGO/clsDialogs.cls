@@ -173,7 +173,7 @@ Public Sub CreateDialog(ByRef chat As String, ByVal CharIndex As Integer, ByVal 
 'depending on the number of chars
 '**************************************************************
     Dim slot As Integer
-    Dim i As Long
+    Dim Iterator As Long
     
     slot = BinarySearch(CharIndex)
     
@@ -183,9 +183,9 @@ Public Sub CreateDialog(ByRef chat As String, ByVal CharIndex As Integer, ByVal 
         'We need to add it. Get insertion index and move list backwards.
         slot = Not slot
         
-        For i = dialogCount To slot + 1 Step -1
-            dialogs(i) = dialogs(i - 1)
-        Next i
+        For Iterator = dialogCount To slot + 1 Step -1
+            dialogs(Iterator) = dialogs(i - 1)
+        Next Iterator
         
         dialogCount = dialogCount + 1
     End If
@@ -312,12 +312,12 @@ Public Sub Render()
 'Last Modification: 08/29/07 by Rapsodius
 'Changed the way it gets rid of older dialogs.
 '**************************************************************
-    Dim i As Long
-    Dim J As Long
+    Dim Iterator As Long
+    Dim Counter As Long
     Dim offset As Integer
     Dim removedDialogs As Long
     
-    For i = 0 To dialogCount - 1
+    For Iterator = 0 To dialogCount - 1
         'Decrease index to prevent jumping over a dialog
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
@@ -329,16 +329,16 @@ Public Sub Render()
                 offset = -(usedFont.Size + 2) * UBound(.textLine())
                 
                 'Render it
-                For J = 0 To UBound(.textLine())
-                    Call DrawText(.X, .Y + offset, .textLine(J), .Color)
+                For Counter = 0 To UBound(.textLine())
+                    Call DrawText(.X, .Y + offset, .textLine(Counter), .Color)
                     offset = offset + usedFont.Size + 5
-                Next J
+                next Counter
                 
                 'Won't render it unless it's updated in next frmae
                 .renderable = False
             End If
         End With
-    Next i
+    Next Iterator
 End Sub
 
 ''
@@ -353,15 +353,15 @@ Public Sub RemoveDialog(ByVal CharIndex As Integer)
 'Removes the dialog from the requested char.
 '**************************************************************
     Dim slot As Integer
-    Dim i As Long
+    Dim Iterator As Long
     
     slot = BinarySearch(CharIndex)
     
     If slot < 0 Then Exit Sub
     
-    For i = slot To MAX_DIALOGS - 2
-        dialogs(i) = dialogs(i + 1)
-    Next i
+    For Iterator = slot To MAX_DIALOGS - 2
+        dialogs(Iterator) = dialogs(i + 1)
+    Next Iterator
     
     dialogCount = dialogCount - 1
 End Sub

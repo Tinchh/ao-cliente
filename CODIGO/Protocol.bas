@@ -34,7 +34,7 @@ Attribute VB_Name = "Protocol"
 
 Option Explicit
 #If False Then
-    Dim nombre, picInv, Status As Variant
+    Dim nombre, PicInv, Status As Variant
 #End If
 ''
 ' TODO : /BANIP y /UNBANIP ya no trabajan con nicks. Esto lo puede mentir en forma local el cliente con un paquete a NickToIp
@@ -1179,7 +1179,7 @@ Private Sub HandleDisconnect()
 'Last Modification: 05/17/06
 '
 '***************************************************
-    Dim i As Long
+    Dim Iterator As Long
     
     'Remove packet ID
     Call incomingData.ReadByte
@@ -1244,7 +1244,7 @@ Private Sub HandleCommerceInit()
 'Last Modification: 05/17/06
 '
 '***************************************************
-    Dim i As Long
+    Dim Iterator As Long
     
     'Remove packet ID
     Call incomingData.ReadByte
@@ -1253,32 +1253,32 @@ Private Sub HandleCommerceInit()
     Set InvComNpc = New clsGrapchicalInventory
     
     ' Initialize commerce inventories
-    Call InvComUsu.Initialize(DirectD3D8, frmComerciar.picInvUser, Inventario.MaxObjs)
-    Call InvComNpc.Initialize(DirectD3D8, frmComerciar.picInvNpc, MAX_NPC_INVENTORY_SLOTS)
+    Call InvComUsu.Initialize(DirectD3D8, frmComerciar.PicInvUser, Inventario.MaxObjs)
+    Call InvComNpc.Initialize(DirectD3D8, frmComerciar.PicInvNpc, MAX_NPC_INVENTORY_SLOTS)
 
     'Fill user inventory
-    For i = 1 To MAX_INVENTORY_SLOTS
-        If Inventario.ObjIndex(i) <> 0 Then
+    For Iterator = 1 To MAX_INVENTORY_SLOTS
+        If Inventario.ObjIndex(Iterator) <> 0 Then
             With Inventario
-                Call InvComUsu.SetItem(i, .ObjIndex(i), _
-                .Amount(i), .Equipped(i), .GrhIndex(i), _
-                .OBJType(i), .MaxHit(i), .MinHit(i), .MaxDef(i), .MinDef(i), _
-                .Valor(i), .ItemName(i))
+                Call InvComUsu.SetItem(i, .ObjIndex(Iterator), _
+                .Amount(Iterator), .Equipped(Iterator), .GrhIndex(Iterator), _
+                .OBJType(Iterator), .MaxHit(Iterator), .MinHit(Iterator), .MaxDef(Iterator), .MinDef(Iterator), _
+                .Valor(Iterator), .ItemName(Iterator))
             End With
         End If
-    Next i
+    Next Iterator
     
     ' Fill Npc inventory
-    For i = 1 To 50
-        If NPCInventory(i).ObjIndex <> 0 Then
-            With NPCInventory(i)
+    For Iterator = 1 To 50
+        If NPCInventory(Iterator).ObjIndex <> 0 Then
+            With NPCInventory(Iterator)
                 Call InvComNpc.SetItem(i, .ObjIndex, _
                 .Amount, 0, .GrhIndex, _
                 .OBJType, .MaxHit, .MinHit, .MaxDef, .MinDef, _
                 .Valor, .Name)
             End With
         End If
-    Next i
+    Next Iterator
     
     'Set state and show form
     Comerciando = True
@@ -1294,7 +1294,7 @@ Private Sub HandleBankInit()
 'Last Modification: 05/17/06
 '
 '***************************************************
-    Dim i As Long
+    Dim Iterator As Long
     Dim BankGold As Long
     
     'Remove packet ID
@@ -1305,25 +1305,25 @@ Private Sub HandleBankInit()
     
     BankGold = incomingData.ReadLong
     Call InvBanco(0).Initialize(DirectD3D8, frmBancoObj.PicBancoInv, MAX_BANCOINVENTORY_SLOTS)
-    Call InvBanco(1).Initialize(DirectD3D8, frmBancoObj.picInv, Inventario.MaxObjs)
+    Call InvBanco(1).Initialize(DirectD3D8, frmBancoObj.PicInv, Inventario.MaxObjs)
     
-    For i = 1 To Inventario.MaxObjs
+    For Iterator = 1 To Inventario.MaxObjs
         With Inventario
-            Call InvBanco(1).SetItem(i, .ObjIndex(i), _
-                .Amount(i), .Equipped(i), .GrhIndex(i), _
-                .OBJType(i), .MaxHit(i), .MinHit(i), .MaxDef(i), .MinDef(i), _
-                .Valor(i), .ItemName(i))
+            Call InvBanco(1).SetItem(i, .ObjIndex(Iterator), _
+                .Amount(Iterator), .Equipped(Iterator), .GrhIndex(Iterator), _
+                .OBJType(Iterator), .MaxHit(Iterator), .MinHit(Iterator), .MaxDef(Iterator), .MinDef(Iterator), _
+                .Valor(Iterator), .ItemName(Iterator))
         End With
-    Next i
+    Next Iterator
     
-    For i = 1 To MAX_BANCOINVENTORY_SLOTS
-        With UserBancoInventory(i)
+    For Iterator = 1 To MAX_BANCOINVENTORY_SLOTS
+        With UserBancoInventory(Iterator)
             Call InvBanco(0).SetItem(i, .ObjIndex, _
                 .Amount, .Equipped, .GrhIndex, _
                 .OBJType, .MaxHit, .MinHit, .MaxDef, .MinDef, _
                 .Valor, .Name)
         End With
-    Next i
+    Next Iterator
     
     'Set state and show form
     Comerciando = True
@@ -1342,7 +1342,7 @@ Private Sub HandleUserCommerceInit()
 'Last Modification: 05/17/06
 '
 '***************************************************
-    Dim i As Long
+    Dim Iterator As Long
     
     'Remove packet ID
     Call incomingData.ReadByte
@@ -1357,24 +1357,24 @@ Private Sub HandleUserCommerceInit()
     Set InvOroComUsu(2) = New clsGrapchicalInventory
     
     ' Initialize commerce inventories
-    Call InvComUsu.Initialize(DirectD3D8, frmComerciarUsu.picInvComercio, Inventario.MaxObjs)
-    Call InvOfferComUsu(0).Initialize(DirectD3D8, frmComerciarUsu.picInvOfertaProp, INV_OFFER_SLOTS)
-    Call InvOfferComUsu(1).Initialize(DirectD3D8, frmComerciarUsu.picInvOfertaOtro, INV_OFFER_SLOTS)
-    Call InvOroComUsu(0).Initialize(DirectD3D8, frmComerciarUsu.picInvOroProp, INV_GOLD_SLOTS, , TilePixelWidth * 2, TilePixelHeight, TilePixelWidth / 2)
-    Call InvOroComUsu(1).Initialize(DirectD3D8, frmComerciarUsu.picInvOroOfertaProp, INV_GOLD_SLOTS, , TilePixelWidth * 2, TilePixelHeight, TilePixelWidth / 2)
-    Call InvOroComUsu(2).Initialize(DirectD3D8, frmComerciarUsu.picInvOroOfertaOtro, INV_GOLD_SLOTS, , TilePixelWidth * 2, TilePixelHeight, TilePixelWidth / 2)
+    Call InvComUsu.Initialize(DirectD3D8, frmComerciarUsu.PicInvComercio, Inventario.MaxObjs)
+    Call InvOfferComUsu(0).Initialize(DirectD3D8, frmComerciarUsu.PicInvOfertaProp, INV_OFFER_SLOTS)
+    Call InvOfferComUsu(1).Initialize(DirectD3D8, frmComerciarUsu.PicInvOfertaOtro, INV_OFFER_SLOTS)
+    Call InvOroComUsu(0).Initialize(DirectD3D8, frmComerciarUsu.PicInvOroProp, INV_GOLD_SLOTS, , TilePixelWidth * 2, TilePixelHeight, TilePixelWidth / 2)
+    Call InvOroComUsu(1).Initialize(DirectD3D8, frmComerciarUsu.PicInvOroOfertaProp, INV_GOLD_SLOTS, , TilePixelWidth * 2, TilePixelHeight, TilePixelWidth / 2)
+    Call InvOroComUsu(2).Initialize(DirectD3D8, frmComerciarUsu.PicInvOroOfertaOtro, INV_GOLD_SLOTS, , TilePixelWidth * 2, TilePixelHeight, TilePixelWidth / 2)
 
     'Fill user inventory
-    For i = 1 To MAX_INVENTORY_SLOTS
-        If Inventario.ObjIndex(i) <> 0 Then
+    For Iterator = 1 To MAX_INVENTORY_SLOTS
+        If Inventario.ObjIndex(Iterator) <> 0 Then
             With Inventario
-                Call InvComUsu.SetItem(i, .ObjIndex(i), _
-                .Amount(i), .Equipped(i), .GrhIndex(i), _
-                .OBJType(i), .MaxHit(i), .MinHit(i), .MaxDef(i), .MinDef(i), _
-                .Valor(i), .ItemName(i))
+                Call InvComUsu.SetItem(i, .ObjIndex(Iterator), _
+                .Amount(Iterator), .Equipped(Iterator), .GrhIndex(Iterator), _
+                .OBJType(Iterator), .MaxHit(Iterator), .MinHit(Iterator), .MaxDef(Iterator), .MinDef(Iterator), _
+                .Valor(Iterator), .ItemName(Iterator))
             End With
         End If
-    Next i
+    Next Iterator
 
     ' Inventarios de oro
     Call InvOroComUsu(0).SetItem(1, ORO_INDEX, UserGLD, 0, ORO_GRH, 0, 0, 0, 0, 0, 0, "Oro")
@@ -2814,10 +2814,10 @@ On Error GoTo ErrHandler
         
         GuildNames = Split(Buffer.ReadASCIIString(), SEPARATOR)
         
-        Dim i As Long
-        For i = 0 To UBound(GuildNames())
-            Call .guildslist.AddItem(GuildNames(i))
-        Next i
+        Dim Iterator As Long
+        For Iterator = 0 To UBound(GuildNames())
+            Call .guildslist.AddItem(GuildNames(Iterator))
+        Next Iterator
         
         'If we got here then packet is complete, copy data back to original queue
         Call incomingData.CopyBuffer(Buffer)
@@ -3361,19 +3361,19 @@ Private Sub HandleAtributes()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim i As Long
+    Dim Iterator As Long
     
-    For i = 1 To NUMATRIBUTES
-        UserAtributos(i) = incomingData.ReadByte()
-    Next i
+    For Iterator = 1 To NUMATRIBUTES
+        UserAtributos(Iterator) = incomingData.ReadByte()
+    Next Iterator
     
     'Show them in character creation
     If EstadoLogin = E_MODO.Dados Then
         With frmCrearPersonaje
             If .Visible Then
-                For i = 1 To NUMATRIBUTES
-                    .lblAtributos(i).Caption = UserAtributos(i)
-                Next i
+                For Iterator = 1 To NUMATRIBUTES
+                    .lblAtributos(Iterator).Caption = UserAtributos(Iterator)
+                Next Iterator
                 
                 .UpdateStats
             End If
@@ -3406,8 +3406,8 @@ On Error GoTo ErrHandler
     Call Buffer.ReadByte
     
     Dim Count As Integer
-    Dim i As Long
-    Dim J As Long
+    Dim Iterator As Long
+    Dim Counter As Long
     Dim k As Long
     
     Count = Buffer.ReadInteger()
@@ -3415,8 +3415,8 @@ On Error GoTo ErrHandler
     ReDim ArmasHerrero(Count) As tItemsConstruibles
     ReDim HerreroMejorar(0) As tItemsConstruibles
     
-    For i = 1 To Count
-        With ArmasHerrero(i)
+    For Iterator = 1 To Count
+        With ArmasHerrero(Iterator)
             .Name = Buffer.ReadASCIIString()    'Get the object's name
             .GrhIndex = Buffer.ReadInteger()
             .LinH = Buffer.ReadInteger()        'The iron needed
@@ -3425,11 +3425,11 @@ On Error GoTo ErrHandler
             .ObjIndex = Buffer.ReadInteger()
             .Upgrade = Buffer.ReadInteger()
         End With
-    Next i
+    Next Iterator
     
-    For i = 1 To MAX_LIST_ITEMS
-        Set InvLingosHerreria(i) = New clsGrapchicalInventory
-    Next i
+    For Iterator = 1 To MAX_LIST_ITEMS
+        Set InvLingosHerreria(Iterator) = New clsGrapchicalInventory
+    Next Iterator
     
     With frmHerrero
         ' Inicializo los inventarios
@@ -3442,30 +3442,30 @@ On Error GoTo ErrHandler
         Call .RenderList(1, True)
     End With
     
-    For i = 1 To Count
-        With ArmasHerrero(i)
+    For Iterator = 1 To Count
+        With ArmasHerrero(Iterator)
             If .Upgrade Then
                 For k = 1 To Count
                     If .Upgrade = ArmasHerrero(k).ObjIndex Then
                         J = J + 1
                 
-                        ReDim Preserve HerreroMejorar(J) As tItemsConstruibles
+                        ReDim Preserve HerreroMejorar(Counter) As tItemsConstruibles
                         
-                        HerreroMejorar(J).Name = .Name
-                        HerreroMejorar(J).GrhIndex = .GrhIndex
-                        HerreroMejorar(J).ObjIndex = .ObjIndex
-                        HerreroMejorar(J).UpgradeName = ArmasHerrero(k).Name
-                        HerreroMejorar(J).UpgradeGrhIndex = ArmasHerrero(k).GrhIndex
-                        HerreroMejorar(J).LinH = ArmasHerrero(k).LinH - .LinH * 0.85
-                        HerreroMejorar(J).LinP = ArmasHerrero(k).LinP - .LinP * 0.85
-                        HerreroMejorar(J).LinO = ArmasHerrero(k).LinO - .LinO * 0.85
+                        HerreroMejorar(Counter).Name = .Name
+                        HerreroMejorar(Counter).GrhIndex = .GrhIndex
+                        HerreroMejorar(Counter).ObjIndex = .ObjIndex
+                        HerreroMejorar(Counter).UpgradeName = ArmasHerrero(k).Name
+                        HerreroMejorar(Counter).UpgradeGrhIndex = ArmasHerrero(k).GrhIndex
+                        HerreroMejorar(Counter).LinH = ArmasHerrero(k).LinH - .LinH * 0.85
+                        HerreroMejorar(Counter).LinP = ArmasHerrero(k).LinP - .LinP * 0.85
+                        HerreroMejorar(Counter).LinO = ArmasHerrero(k).LinO - .LinO * 0.85
                         
                         Exit For
                     End If
                 Next k
             End If
         End With
-    Next i
+    Next Iterator
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(Buffer)
@@ -3505,16 +3505,16 @@ On Error GoTo ErrHandler
     Call Buffer.ReadByte
     
     Dim Count As Integer
-    Dim i As Long
-    Dim J As Long
+    Dim Iterator As Long
+    Dim Counter As Long
     Dim k As Long
     
     Count = Buffer.ReadInteger()
     
     ReDim ArmadurasHerrero(Count) As tItemsConstruibles
     
-    For i = 1 To Count
-        With ArmadurasHerrero(i)
+    For Iterator = 1 To Count
+        With ArmadurasHerrero(Iterator)
             .Name = Buffer.ReadASCIIString()    'Get the object's name
             .GrhIndex = Buffer.ReadInteger()
             .LinH = Buffer.ReadInteger()        'The iron needed
@@ -3523,34 +3523,34 @@ On Error GoTo ErrHandler
             .ObjIndex = Buffer.ReadInteger()
             .Upgrade = Buffer.ReadInteger()
         End With
-    Next i
+    Next Iterator
     
     J = UBound(HerreroMejorar)
     
-    For i = 1 To Count
-        With ArmadurasHerrero(i)
+    For Iterator = 1 To Count
+        With ArmadurasHerrero(Iterator)
             If .Upgrade Then
                 For k = 1 To Count
                     If .Upgrade = ArmadurasHerrero(k).ObjIndex Then
                         J = J + 1
                 
-                        ReDim Preserve HerreroMejorar(J) As tItemsConstruibles
+                        ReDim Preserve HerreroMejorar(Counter) As tItemsConstruibles
                         
-                        HerreroMejorar(J).Name = .Name
-                        HerreroMejorar(J).GrhIndex = .GrhIndex
-                        HerreroMejorar(J).ObjIndex = .ObjIndex
-                        HerreroMejorar(J).UpgradeName = ArmadurasHerrero(k).Name
-                        HerreroMejorar(J).UpgradeGrhIndex = ArmadurasHerrero(k).GrhIndex
-                        HerreroMejorar(J).LinH = ArmadurasHerrero(k).LinH - .LinH * 0.85
-                        HerreroMejorar(J).LinP = ArmadurasHerrero(k).LinP - .LinP * 0.85
-                        HerreroMejorar(J).LinO = ArmadurasHerrero(k).LinO - .LinO * 0.85
+                        HerreroMejorar(Counter).Name = .Name
+                        HerreroMejorar(Counter).GrhIndex = .GrhIndex
+                        HerreroMejorar(Counter).ObjIndex = .ObjIndex
+                        HerreroMejorar(Counter).UpgradeName = ArmadurasHerrero(k).Name
+                        HerreroMejorar(Counter).UpgradeGrhIndex = ArmadurasHerrero(k).GrhIndex
+                        HerreroMejorar(Counter).LinH = ArmadurasHerrero(k).LinH - .LinH * 0.85
+                        HerreroMejorar(Counter).LinP = ArmadurasHerrero(k).LinP - .LinP * 0.85
+                        HerreroMejorar(Counter).LinO = ArmadurasHerrero(k).LinO - .LinO * 0.85
                         
                         Exit For
                     End If
                 Next k
             End If
         End With
-    Next i
+    Next Iterator
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(Buffer)
@@ -3590,8 +3590,8 @@ On Error GoTo ErrHandler
     Call Buffer.ReadByte
     
     Dim Count As Integer
-    Dim i As Long
-    Dim J As Long
+    Dim Iterator As Long
+    Dim Counter As Long
     Dim k As Long
     
     Count = Buffer.ReadInteger()
@@ -3599,8 +3599,8 @@ On Error GoTo ErrHandler
     ReDim ObjCarpintero(Count) As tItemsConstruibles
     ReDim CarpinteroMejorar(0) As tItemsConstruibles
     
-    For i = 1 To Count
-        With ObjCarpintero(i)
+    For Iterator = 1 To Count
+        With ObjCarpintero(Iterator)
             .Name = Buffer.ReadASCIIString()        'Get the object's name
             .GrhIndex = Buffer.ReadInteger()
             .Madera = Buffer.ReadInteger()          'The wood needed
@@ -3608,11 +3608,11 @@ On Error GoTo ErrHandler
             .ObjIndex = Buffer.ReadInteger()
             .Upgrade = Buffer.ReadInteger()
         End With
-    Next i
+    Next Iterator
     
-    For i = 1 To MAX_LIST_ITEMS
-        Set InvMaderasCarpinteria(i) = New clsGrapchicalInventory
-    Next i
+    For Iterator = 1 To MAX_LIST_ITEMS
+        Set InvMaderasCarpinteria(Iterator) = New clsGrapchicalInventory
+    Next Iterator
     
     With frmCarp
         ' Inicializo los inventarios
@@ -3625,29 +3625,29 @@ On Error GoTo ErrHandler
         Call .RenderList(1)
     End With
     
-    For i = 1 To Count
-        With ObjCarpintero(i)
+    For Iterator = 1 To Count
+        With ObjCarpintero(Iterator)
             If .Upgrade Then
                 For k = 1 To Count
                     If .Upgrade = ObjCarpintero(k).ObjIndex Then
                         J = J + 1
                 
-                        ReDim Preserve CarpinteroMejorar(J) As tItemsConstruibles
+                        ReDim Preserve CarpinteroMejorar(Counter) As tItemsConstruibles
                         
-                        CarpinteroMejorar(J).Name = .Name
-                        CarpinteroMejorar(J).GrhIndex = .GrhIndex
-                        CarpinteroMejorar(J).ObjIndex = .ObjIndex
-                        CarpinteroMejorar(J).UpgradeName = ObjCarpintero(k).Name
-                        CarpinteroMejorar(J).UpgradeGrhIndex = ObjCarpintero(k).GrhIndex
-                        CarpinteroMejorar(J).Madera = ObjCarpintero(k).Madera - .Madera * 0.85
-                        CarpinteroMejorar(J).MaderaElfica = ObjCarpintero(k).MaderaElfica - .MaderaElfica * 0.85
+                        CarpinteroMejorar(Counter).Name = .Name
+                        CarpinteroMejorar(Counter).GrhIndex = .GrhIndex
+                        CarpinteroMejorar(Counter).ObjIndex = .ObjIndex
+                        CarpinteroMejorar(Counter).UpgradeName = ObjCarpintero(k).Name
+                        CarpinteroMejorar(Counter).UpgradeGrhIndex = ObjCarpintero(k).GrhIndex
+                        CarpinteroMejorar(Counter).Madera = ObjCarpintero(k).Madera - .Madera * 0.85
+                        CarpinteroMejorar(Counter).MaderaElfica = ObjCarpintero(k).MaderaElfica - .MaderaElfica * 0.85
                         
                         Exit For
                     End If
                 Next k
             End If
         End With
-    Next i
+    Next Iterator
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(Buffer)
@@ -4175,12 +4175,12 @@ Private Sub HandleSendSkills()
 
     UserClase = incomingData.ReadByte
     
-    Dim i As Long
+    Dim Iterator As Long
     
-    For i = 1 To NUMSKILLS
-        UserSkills(i) = incomingData.ReadByte()
-        PorcentajeSkills(i) = incomingData.ReadByte()
-    Next i
+    For Iterator = 1 To NUMSKILLS
+        UserSkills(Iterator) = incomingData.ReadByte()
+        PorcentajeSkills(Iterator) = incomingData.ReadByte()
+    Next Iterator
     
     LlegaronSkills = True
 End Sub
@@ -4208,13 +4208,13 @@ On Error GoTo ErrHandler
     Call Buffer.ReadByte
     
     Dim creatures() As String
-    Dim i As Long
+    Dim Iterator As Long
     
     creatures = Split(Buffer.ReadASCIIString(), SEPARATOR)
     
-    For i = 0 To UBound(creatures())
-        Call frmEntrenador.lstCriaturas.AddItem(creatures(i))
-    Next i
+    For Iterator = 0 To UBound(creatures())
+        Call frmEntrenador.lstCriaturas.AddItem(creatures(Iterator))
+    Next Iterator
     frmEntrenador.Show , frmMain
     
     'If we got here then packet is complete, copy data back to original queue
@@ -4255,7 +4255,7 @@ On Error GoTo ErrHandler
     Call Buffer.ReadByte
     
     Dim guildList() As String
-    Dim i As Long
+    Dim Iterator As Long
     Dim sTemp As String
     
     'Get news' string
@@ -4264,18 +4264,18 @@ On Error GoTo ErrHandler
     'Get Enemy guilds list
     guildList = Split(Buffer.ReadASCIIString(), SEPARATOR)
     
-    For i = 0 To UBound(guildList)
+    For Iterator = 0 To UBound(guildList)
         sTemp = frmGuildNews.txtClanesGuerra.Text
-        frmGuildNews.txtClanesGuerra.Text = sTemp & guildList(i) & vbCrLf
-    Next i
+        frmGuildNews.txtClanesGuerra.Text = sTemp & guildList(Iterator) & vbCrLf
+    Next Iterator
     
     'Get Allied guilds list
     guildList = Split(Buffer.ReadASCIIString(), SEPARATOR)
     
-    For i = 0 To UBound(guildList)
+    For Iterator = 0 To UBound(guildList)
         sTemp = frmGuildNews.txtClanesAliados.Text
-        frmGuildNews.txtClanesAliados.Text = sTemp & guildList(i) & vbCrLf
-    Next i
+        frmGuildNews.txtClanesAliados.Text = sTemp & guildList(Iterator) & vbCrLf
+    Next Iterator
     
     If ClientSetup.bGuildNews Or bShowGuildNews Then frmGuildNews.Show vbModeless, frmMain
     
@@ -4356,14 +4356,14 @@ On Error GoTo ErrHandler
     Call Buffer.ReadByte
     
     Dim vsGuildList() As String
-    Dim i As Long
+    Dim Iterator As Long
     
     vsGuildList = Split(Buffer.ReadASCIIString(), SEPARATOR)
     
     Call frmPeaceProp.lista.Clear
-    For i = 0 To UBound(vsGuildList())
-        Call frmPeaceProp.lista.AddItem(vsGuildList(i))
-    Next i
+    For Iterator = 0 To UBound(vsGuildList())
+        Call frmPeaceProp.lista.AddItem(vsGuildList(Iterator))
+    Next Iterator
     
     frmPeaceProp.ProposalType = TIPO_PROPUESTA.ALIANZA
     Call frmPeaceProp.Show(vbModeless, frmMain)
@@ -4406,14 +4406,14 @@ On Error GoTo ErrHandler
     Call Buffer.ReadByte
     
     Dim guildList() As String
-    Dim i As Long
+    Dim Iterator As Long
     
     guildList = Split(Buffer.ReadASCIIString(), SEPARATOR)
     
     Call frmPeaceProp.lista.Clear
-    For i = 0 To UBound(guildList())
-        Call frmPeaceProp.lista.AddItem(guildList(i))
-    Next i
+    For Iterator = 0 To UBound(guildList())
+        Call frmPeaceProp.lista.AddItem(guildList(Iterator))
+    Next Iterator
     
     frmPeaceProp.ProposalType = TIPO_PROPUESTA.PAZ
     Call frmPeaceProp.Show(vbModeless, frmMain)
@@ -4554,7 +4554,7 @@ On Error GoTo ErrHandler
     'Remove packet ID
     Call Buffer.ReadByte
     
-    Dim i As Long
+    Dim Iterator As Long
     Dim List() As String
     
     With frmGuildLeader
@@ -4564,9 +4564,9 @@ On Error GoTo ErrHandler
         'Empty the list
         Call .guildslist.Clear
         
-        For i = 0 To UBound(GuildNames())
-            Call .guildslist.AddItem(GuildNames(i))
-        Next i
+        For Iterator = 0 To UBound(GuildNames())
+            Call .guildslist.AddItem(GuildNames(Iterator))
+        Next Iterator
         
         'Get list of guild's members
         GuildMembers = Split(Buffer.ReadASCIIString(), SEPARATOR)
@@ -4575,9 +4575,9 @@ On Error GoTo ErrHandler
         'Empty the list
         Call .members.Clear
         
-        For i = 0 To UBound(GuildMembers())
-            Call .members.AddItem(GuildMembers(i))
-        Next i
+        For Iterator = 0 To UBound(GuildMembers())
+            Call .members.AddItem(GuildMembers(Iterator))
+        Next Iterator
         
         .txtguildnews = Buffer.ReadASCIIString()
         
@@ -4587,9 +4587,9 @@ On Error GoTo ErrHandler
         'Empty the list
         Call .solicitudes.Clear
         
-        For i = 0 To UBound(List())
-            Call .solicitudes.AddItem(List(i))
-        Next i
+        For Iterator = 0 To UBound(List())
+            Call .solicitudes.AddItem(List(Iterator))
+        Next Iterator
         
         .Show , frmMain
     End With
@@ -4655,13 +4655,13 @@ On Error GoTo ErrHandler
         .antifaccion.Caption = Buffer.ReadASCIIString()
         
         Dim codexStr() As String
-        Dim i As Long
+        Dim Iterator As Long
         
         codexStr = Split(Buffer.ReadASCIIString(), SEPARATOR)
         
-        For i = 0 To 7
-            .Codex(i).Caption = codexStr(i)
-        Next i
+        For Iterator = 0 To 7
+            .Codex(Iterator).Caption = codexStr(Iterator)
+        Next Iterator
         
         .Desc.Text = Buffer.ReadASCIIString()
     End With
@@ -4782,39 +4782,39 @@ Private Sub HandleTradeOK()
     Call incomingData.ReadByte
     
     If frmComerciar.Visible Then
-        Dim i As Long
+        Dim Iterator As Long
         
         'Update user inventory
-        For i = 1 To MAX_INVENTORY_SLOTS
+        For Iterator = 1 To MAX_INVENTORY_SLOTS
             ' Agrego o quito un item en su totalidad
-            If Inventario.ObjIndex(i) <> InvComUsu.ObjIndex(i) Then
+            If Inventario.ObjIndex(Iterator) <> InvComUsu.ObjIndex(Iterator) Then
                 With Inventario
-                    Call InvComUsu.SetItem(i, .ObjIndex(i), _
-                    .Amount(i), .Equipped(i), .GrhIndex(i), _
-                    .OBJType(i), .MaxHit(i), .MinHit(i), .MaxDef(i), .MinDef(i), _
-                    .Valor(i), .ItemName(i))
+                    Call InvComUsu.SetItem(i, .ObjIndex(Iterator), _
+                    .Amount(Iterator), .Equipped(Iterator), .GrhIndex(Iterator), _
+                    .OBJType(Iterator), .MaxHit(Iterator), .MinHit(Iterator), .MaxDef(Iterator), .MinDef(Iterator), _
+                    .Valor(Iterator), .ItemName(Iterator))
                 End With
             ' Vendio o compro cierta cantidad de un item que ya tenia
-            ElseIf Inventario.Amount(i) <> InvComUsu.Amount(i) Then
-                Call InvComUsu.ChangeSlotItemAmount(i, Inventario.Amount(i))
+            ElseIf Inventario.Amount(Iterator) <> InvComUsu.Amount(Iterator) Then
+                Call InvComUsu.ChangeSlotItemAmount(i, Inventario.Amount(Iterator))
             End If
-        Next i
+        Next Iterator
         
         ' Fill Npc inventory
-        For i = 1 To 20
+        For Iterator = 1 To 20
             ' Compraron la totalidad de un item, o vendieron un item que el npc no tenia
-            If NPCInventory(i).ObjIndex <> InvComNpc.ObjIndex(i) Then
-                With NPCInventory(i)
+            If NPCInventory(Iterator).ObjIndex <> InvComNpc.ObjIndex(Iterator) Then
+                With NPCInventory(Iterator)
                     Call InvComNpc.SetItem(i, .ObjIndex, _
                     .Amount, 0, .GrhIndex, _
                     .OBJType, .MaxHit, .MinHit, .MaxDef, .MinDef, _
                     .Valor, .Name)
                 End With
             ' Compraron o vendieron cierta cantidad (no su totalidad)
-            ElseIf NPCInventory(i).Amount <> InvComNpc.Amount(i) Then
-                Call InvComNpc.ChangeSlotItemAmount(i, NPCInventory(i).Amount)
+            ElseIf NPCInventory(Iterator).Amount <> InvComNpc.Amount(Iterator) Then
+                Call InvComNpc.ChangeSlotItemAmount(i, NPCInventory(Iterator).Amount)
             End If
-        Next i
+        Next Iterator
     
     End If
 End Sub
@@ -4831,17 +4831,17 @@ Private Sub HandleBankOK()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim i As Long
+    Dim Iterator As Long
     
     If frmBancoObj.Visible Then
         
-        For i = 1 To Inventario.MaxObjs
+        For Iterator = 1 To Inventario.MaxObjs
             With Inventario
-                Call InvBanco(1).SetItem(i, .ObjIndex(i), .Amount(i), _
-                    .Equipped(i), .GrhIndex(i), .OBJType(i), .MaxHit(i), _
-                    .MinHit(i), .MaxDef(i), .MinDef(i), .Valor(i), .ItemName(i))
+                Call InvBanco(1).SetItem(i, .ObjIndex(Iterator), .Amount(Iterator), _
+                    .Equipped(Iterator), .GrhIndex(Iterator), .OBJType(Iterator), .MaxHit(Iterator), _
+                    .MinHit(Iterator), .MaxDef(Iterator), .MinDef(Iterator), .Valor(Iterator), .ItemName(Iterator))
             End With
-        Next i
+        Next Iterator
         
         'Alter order according to if we bought or sold so the labels and grh remain the same
         If frmBancoObj.LasActionBuy Then
@@ -4956,13 +4956,13 @@ On Error GoTo ErrHandler
     Call Buffer.ReadByte
     
     Dim creatureList() As String
-    Dim i As Long
+    Dim Iterator As Long
     
     creatureList = Split(Buffer.ReadASCIIString(), SEPARATOR)
     
-    For i = 0 To UBound(creatureList())
-        Call frmSpawnList.lstCriaturas.AddItem(creatureList(i))
-    Next i
+    For Iterator = 0 To UBound(creatureList())
+        Call frmSpawnList.lstCriaturas.AddItem(creatureList(Iterator))
+    Next Iterator
     frmSpawnList.Show , frmMain
     
     'If we got here then packet is complete, copy data back to original queue
@@ -5003,13 +5003,13 @@ On Error GoTo ErrHandler
     Call Buffer.ReadByte
     
     Dim sosList() As String
-    Dim i As Long
+    Dim Iterator As Long
     
     sosList = Split(Buffer.ReadASCIIString(), SEPARATOR)
     
-    For i = 0 To UBound(sosList())
-        Call frmMSG.List1.AddItem(sosList(i))
-    Next i
+    For Iterator = 0 To UBound(sosList())
+        Call frmMSG.List1.AddItem(sosList(Iterator))
+    Next Iterator
     
     frmMSG.Show , frmMain
     
@@ -5099,14 +5099,14 @@ On Error GoTo ErrHandler
     Call Buffer.ReadByte
     
     Dim members() As String
-    Dim i As Long
+    Dim Iterator As Long
     
     EsPartyLeader = CBool(Buffer.ReadByte())
        
     members = Split(Buffer.ReadASCIIString(), SEPARATOR)
-    For i = 0 To UBound(members())
-        Call frmParty.lstMembers.AddItem(members(i))
-    Next i
+    For Iterator = 0 To UBound(members())
+        Call frmParty.lstMembers.AddItem(members(Iterator))
+    Next Iterator
     
     frmParty.lblTotalExp.Caption = Buffer.ReadLong
     frmParty.Show , frmMain
@@ -5206,15 +5206,15 @@ On Error GoTo ErrHandler
     Call Buffer.ReadByte
     
     Dim userList() As String
-    Dim i As Long
+    Dim Iterator As Long
     
     userList = Split(Buffer.ReadASCIIString(), SEPARATOR)
     
     If frmPanelGm.Visible Then
         frmPanelGm.cboListaUsus.Clear
-        For i = 0 To UBound(userList())
-            Call frmPanelGm.cboListaUsus.AddItem(userList(i))
-        Next i
+        For Iterator = 0 To UBound(userList())
+            Call frmPanelGm.cboListaUsus.AddItem(userList(Iterator))
+        Next Iterator
         If frmPanelGm.cboListaUsus.ListCount > 0 Then frmPanelGm.cboListaUsus.ListIndex = 0
     End If
     
@@ -5277,10 +5277,10 @@ On Error GoTo ErrHandler
         
         GuildNames = Split(Buffer.ReadASCIIString(), SEPARATOR)
         
-        Dim i As Long
-        For i = 0 To UBound(GuildNames())
-            Call .lstClanes.AddItem(GuildNames(i))
-        Next i
+        Dim Iterator As Long
+        For Iterator = 0 To UBound(GuildNames())
+            Call .lstClanes.AddItem(GuildNames(Iterator))
+        Next Iterator
         
         'Get list of guild's members
         GuildMembers = Split(Buffer.ReadASCIIString(), SEPARATOR)
@@ -5289,9 +5289,9 @@ On Error GoTo ErrHandler
         'Empty the list
         Call .lstMiembros.Clear
         
-        For i = 0 To UBound(GuildMembers())
-            Call .lstMiembros.AddItem(GuildMembers(i))
-        Next i
+        For Iterator = 0 To UBound(GuildMembers())
+            Call .lstMiembros.AddItem(GuildMembers(Iterator))
+        Next Iterator
         
         'If we got here then packet is complete, copy data back to original queue
         Call incomingData.CopyBuffer(Buffer)
@@ -5381,7 +5381,7 @@ Public Sub WriteLoginExistingChar()
 'Last Modification: 05/17/06
 'Writes the "LoginExistingChar" message to the outgoing data buffer
 '***************************************************
-    Dim i As Long
+    Dim Iterator As Long
     
     With outgoingData
         Call .WriteByte(ClientPacketID.LoginExistingChar)
@@ -5421,7 +5421,7 @@ Public Sub WriteLoginNewChar()
 'Last Modification: 05/17/06
 'Writes the "LoginNewChar" message to the outgoing data buffer
 '***************************************************
-    Dim i As Long
+    Dim Iterator As Long
     
     With outgoingData
         Call .WriteByte(ClientPacketID.LoginNewChar)
@@ -6003,7 +6003,7 @@ Public Sub WriteCreateNewGuild(ByVal Desc As String, ByVal Name As String, ByVal
 'Writes the "CreateNewGuild" message to the outgoing data buffer
 '***************************************************
     Dim Temp As String
-    Dim i As Long
+    Dim Iterator As Long
     
     With outgoingData
         Call .WriteByte(ClientPacketID.CreateNewGuild)
@@ -6012,9 +6012,9 @@ Public Sub WriteCreateNewGuild(ByVal Desc As String, ByVal Name As String, ByVal
         Call .WriteASCIIString(Name)
         Call .WriteASCIIString(Site)
         
-        For i = LBound(Codex()) To UBound(Codex())
-            Temp = Temp & Codex(i) & SEPARATOR
-        Next i
+        For Iterator = LBound(Codex()) To UBound(Codex())
+            Temp = Temp & Codex(Iterator) & SEPARATOR
+        Next Iterator
         
         If Len(Temp) Then _
             Temp = Left$(Temp, Len(Temp) - 1)
@@ -6074,14 +6074,14 @@ Public Sub WriteModifySkills(ByRef skillEdt() As Byte)
 'Last Modification: 05/17/06
 'Writes the "ModifySkills" message to the outgoing data buffer
 '***************************************************
-    Dim i As Long
+    Dim Iterator As Long
     
     With outgoingData
         Call .WriteByte(ClientPacketID.ModifySkills)
         
-        For i = 1 To NUMSKILLS
-            Call .WriteByte(skillEdt(i))
-        Next i
+        For Iterator = 1 To NUMSKILLS
+            Call .WriteByte(skillEdt(Iterator))
+        Next Iterator
     End With
 End Sub
 
@@ -6266,16 +6266,16 @@ Public Sub WriteClanCodexUpdate(ByVal Desc As String, ByRef Codex() As String)
 'Writes the "ClanCodexUpdate" message to the outgoing data buffer
 '***************************************************
     Dim Temp As String
-    Dim i As Long
+    Dim Iterator As Long
     
     With outgoingData
         Call .WriteByte(ClientPacketID.ClanCodexUpdate)
         
         Call .WriteASCIIString(Desc)
         
-        For i = LBound(Codex()) To UBound(Codex())
-            Temp = Temp & Codex(i) & SEPARATOR
-        Next i
+        For Iterator = LBound(Codex()) To UBound(Codex())
+            Temp = Temp & Codex(Iterator) & SEPARATOR
+        Next Iterator
         
         If Len(Temp) Then _
             Temp = Left$(Temp, Len(Temp) - 1)
@@ -8429,15 +8429,15 @@ Public Sub WriteIPToNick(ByRef Ip() As Byte)
 '***************************************************
     If UBound(Ip()) - LBound(Ip()) + 1 <> 4 Then Exit Sub   'Invalid IP
     
-    Dim i As Long
+    Dim Iterator As Long
     
     With outgoingData
         Call .WriteByte(ClientPacketID.GMCommands)
         Call .WriteByte(eGMCommands.IPToNick)
         
-        For i = LBound(Ip()) To UBound(Ip())
-            Call .WriteByte(Ip(i))
-        Next i
+        For Iterator = LBound(Ip()) To UBound(Ip())
+            Call .WriteByte(Ip(Iterator))
+        Next Iterator
     End With
 End Sub
 
@@ -8950,7 +8950,7 @@ Public Sub WriteBanIP(ByVal byIp As Boolean, ByRef Ip() As Byte, ByVal Nick As S
 '***************************************************
     If byIp And UBound(Ip()) - LBound(Ip()) + 1 <> 4 Then Exit Sub   'Invalid IP
     
-    Dim i As Long
+    Dim Iterator As Long
     
     With outgoingData
         Call .WriteByte(ClientPacketID.GMCommands)
@@ -8959,9 +8959,9 @@ Public Sub WriteBanIP(ByVal byIp As Boolean, ByRef Ip() As Byte, ByVal Nick As S
         Call .WriteBoolean(byIp)
         
         If byIp Then
-            For i = LBound(Ip()) To UBound(Ip())
-                Call .WriteByte(Ip(i))
-            Next i
+            For Iterator = LBound(Ip()) To UBound(Ip())
+                Call .WriteByte(Ip(Iterator))
+            Next Iterator
         Else
             Call .WriteASCIIString(Nick)
         End If
@@ -8984,15 +8984,15 @@ Public Sub WriteUnbanIP(ByRef Ip() As Byte)
 '***************************************************
     If UBound(Ip()) - LBound(Ip()) + 1 <> 4 Then Exit Sub   'Invalid IP
     
-    Dim i As Long
+    Dim Iterator As Long
     
     With outgoingData
         Call .WriteByte(ClientPacketID.GMCommands)
         Call .WriteByte(eGMCommands.UnbanIP)
         
-        For i = LBound(Ip()) To UBound(Ip())
-            Call .WriteByte(Ip(i))
-        Next i
+        For Iterator = LBound(Ip()) To UBound(Ip())
+            Call .WriteByte(Ip(Iterator))
+        Next Iterator
     End With
 End Sub
 
@@ -10392,15 +10392,15 @@ On Error GoTo ErrHandler
     Call Buffer.ReadByte
     
     Dim NumRecords As Byte
-    Dim i As Long
+    Dim Iterator As Long
     
     NumRecords = Buffer.ReadByte
     
     'Se limpia el ListBox y se agregan los usuarios
     frmPanelGm.lstUsers.Clear
-    For i = 1 To NumRecords
+    For Iterator = 1 To NumRecords
         frmPanelGm.lstUsers.AddItem Buffer.ReadASCIIString
-    Next i
+    Next Iterator
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(Buffer)

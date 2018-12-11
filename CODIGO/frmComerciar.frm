@@ -37,7 +37,7 @@ Begin VB.Form frmComerciar
       Top             =   6570
       Width           =   630
    End
-   Begin VB.PictureBox picInvUser 
+   Begin VB.PictureBox PicInvUser 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
       BackColor       =   &H00000000&
@@ -63,7 +63,7 @@ Begin VB.Form frmComerciar
       Top             =   1965
       Width           =   2400
    End
-   Begin VB.PictureBox picInvNpc 
+   Begin VB.PictureBox PicInvNpc 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
       BackColor       =   &H00000000&
@@ -264,12 +264,12 @@ Private Sub cantidad_Change()
     End If
     
     If ClickNpcInv Then
-        If InvComNpc.SelectedItem <> 0 Then
+        If IteratornvComNpc.SelectedItem <> 0 Then
             'El precio, cuando nos venden algo, lo tenemos que redondear para arriba.
             Label1(1).Caption = "Precio: " & CalculateSellPrice(NPCInventory(InvComNpc.SelectedItem).Valor, Val(cantidad.Text))  'No mostramos numeros reales
         End If
     Else
-        If InvComUsu.SelectedItem <> 0 Then
+        If IteratornvComUsu.SelectedItem <> 0 Then
             Label1(1).Caption = "Precio: " & CalculateBuyPrice(Inventario.Valor(InvComUsu.SelectedItem), Val(cantidad.Text))  'No mostramos numeros reales
         End If
     End If
@@ -371,7 +371,7 @@ End Function
 
 Private Sub imgComprar_Click()
     ' Debe tener seleccionado un item para comprarlo.
-    If InvComNpc.SelectedItem = 0 Then Exit Sub
+    If IteratornvComNpc.SelectedItem = 0 Then Exit Sub
     
     If Not IsNumeric(cantidad.Text) Or cantidad.Text = 0 Then Exit Sub
     
@@ -393,7 +393,7 @@ End Sub
 
 Private Sub imgVender_Click()
     ' Debe tener seleccionado un item para comprarlo.
-    If InvComUsu.SelectedItem = 0 Then Exit Sub
+    If IteratornvComUsu.SelectedItem = 0 Then Exit Sub
 
     If Not IsNumeric(cantidad.Text) Or cantidad.Text = 0 Then Exit Sub
     
@@ -404,11 +404,11 @@ Private Sub imgVender_Click()
     Call WriteCommerceSell(InvComUsu.SelectedItem, Val(cantidad.Text))
 End Sub
 
-Private Sub picInvNpc_Click()
+Private Sub PicInvNpc_Click()
     Dim ItemSlot As Byte
     
     ItemSlot = InvComNpc.SelectedItem
-    If ItemSlot = 0 Then Exit Sub
+    If IteratortemSlot = 0 Then Exit Sub
     
     ClickNpcInv = True
     InvComUsu.DeselectItem
@@ -439,17 +439,17 @@ Private Sub picInvNpc_Click()
     End If
 End Sub
 
-Private Sub picInvNpc_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub PicInvNpc_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     LastButtonPressed.ToggleToNormal
 End Sub
 
 
-Private Sub picInvUser_Click()
+Private Sub PicInvUser_Click()
     Dim ItemSlot As Byte
     
     ItemSlot = InvComUsu.SelectedItem
     
-    If ItemSlot = 0 Then Exit Sub
+    If IteratortemSlot = 0 Then Exit Sub
     
     ClickNpcInv = False
     InvComNpc.DeselectItem
@@ -457,7 +457,7 @@ Private Sub picInvUser_Click()
     Label1(0).Caption = Inventario.ItemName(ItemSlot)
     Label1(1).Caption = "Precio: " & CalculateBuyPrice(Inventario.Valor(ItemSlot), Val(cantidad.Text)) 'No mostramos numeros reales
     
-    If Inventario.Amount(ItemSlot) <> 0 Then
+    If Iteratornventario.Amount(ItemSlot) <> 0 Then
     
         Select Case Inventario.OBJType(ItemSlot)
             Case eObjType.otWeapon
@@ -480,6 +480,6 @@ Private Sub picInvUser_Click()
     End If
 End Sub
 
-Private Sub picInvUser_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub PicInvUser_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     LastButtonPressed.ToggleToNormal
 End Sub

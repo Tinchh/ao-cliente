@@ -104,8 +104,8 @@ Private Sub Engine_Render_Text(ByRef UseFont As CustomFont, ByVal Text As String
     Dim Row As Integer
     Dim u As Single
     Dim v As Single
-    Dim i As Long
-    Dim J As Long
+    Dim Iterator As Long
+    Dim Counter As Long
     Dim KeyPhrase As Byte
     Dim TempColor As Long
     Dim ResetColor As Byte
@@ -127,23 +127,23 @@ Private Sub Engine_Render_Text(ByRef UseFont As CustomFont, ByVal Text As String
     NewText = Text
     Text = vbNullString
     
-    For i = 0 To UBound(tempstr)
-        If tempstr(i) = ":)" Or tempstr(i) = "=)" Then
-            tempstr(i) = Chr$(129)
-        ElseIf tempstr(i) = ":@" Or tempstr(i) = "=@" Then
-            tempstr(i) = Chr$(137)
-        ElseIf tempstr(i) = ":(" Or tempstr(i) = "=(" Then
-            tempstr(i) = Chr$(141)
-        ElseIf tempstr(i) = "^^" Or tempstr(i) = "^_^" Then
-            tempstr(i) = Chr$(143)
-        ElseIf tempstr(i) = ":D" Or tempstr(i) = "=D" Then
-            tempstr(i) = Chr$(144)
-        ElseIf tempstr(i) = "xD" Or tempstr(i) = "XD" Then
-            tempstr(i) = Chr$(157)
-        ElseIf tempstr(i) = ":S" Or tempstr(i) = "=S" Then
-            tempstr(i) = Chr$(160)
+    For Iterator = 0 To UBound(tempstr)
+        If tempstr(Iterator) = ":)" Or tempstr(Iterator) = "=)" Then
+            tempstr(Iterator) = Chr$(129)
+        ElseIf tempstr(Iterator) = ":@" Or tempstr(Iterator) = "=@" Then
+            tempstr(Iterator) = Chr$(137)
+        ElseIf tempstr(Iterator) = ":(" Or tempstr(Iterator) = "=(" Then
+            tempstr(Iterator) = Chr$(141)
+        ElseIf tempstr(Iterator) = "^^" Or tempstr(Iterator) = "^_^" Then
+            tempstr(Iterator) = Chr$(143)
+        ElseIf tempstr(Iterator) = ":D" Or tempstr(Iterator) = "=D" Then
+            tempstr(Iterator) = Chr$(144)
+        ElseIf tempstr(Iterator) = "xD" Or tempstr(Iterator) = "XD" Then
+            tempstr(Iterator) = Chr$(157)
+        ElseIf tempstr(Iterator) = ":S" Or tempstr(Iterator) = "=S" Then
+            tempstr(Iterator) = Chr$(160)
         End If
-        Text = Text & Chr$(32) & tempstr(i)
+        Text = Text & Chr$(32) & tempstr(Iterator)
     Next
     ' Made by ^[GS]^ for GSZAO
     
@@ -161,16 +161,16 @@ Private Sub Engine_Render_Text(ByRef UseFont As CustomFont, ByVal Text As String
     End If
     
     'Loop through each line if there are line breaks (vbCrLf)
-    For i = 0 To UBound(tempstr)
-        If Len(tempstr(i)) > 0 Then
+    For Iterator = 0 To UBound(tempstr)
+        If Len(tempstr(Iterator)) > 0 Then
             YOffset = i * UseFont.CharHeight
             Count = 0
         
             'Convert the characters to the ascii value
-            ascii() = StrConv(tempstr(i), vbFromUnicode)
+            ascii() = StrConv(tempstr(Iterator), vbFromUnicode)
         
             'Loop through the characters
-            For J = 1 To Len(tempstr(i))
+            For Counter = 1 To Len(tempstr(Iterator))
 
                 'Copy from the cached vertex array to the temp vertex array
                 CopyMemory TempVA(0), UseFont.HeaderInfo.CharVA(ascii(J - 1)).Vertex(0), 32 * 4
@@ -214,10 +214,10 @@ Private Sub Engine_Render_Text(ByRef UseFont As CustomFont, ByVal Text As String
                     TempColor = Color
                 End If
                 
-            Next J
+            next Counter
             
         End If
-    Next i
+    Next Iterator
 
 End Sub
 
@@ -262,12 +262,12 @@ Dim i As Integer
     If LenB(Text) = 0 Then Exit Function
     
     'Loop through the text
-    For i = 1 To Len(Text)
+    For Iterator = 1 To Len(Text)
         
         'Add up the stored character widths
-        Engine_GetTextWidth = Engine_GetTextWidth + UseFont.HeaderInfo.CharWidth(Asc(mid$(Text, i, 1)))
+        Engine_GetTextWidth = Engine_GetTextWidth + UseFont.HeaderInfo.CharWidth(Asc(mid$(Text, Iterator, 1)))
         
-    Next i
+    Next Iterator
 
 End Function
 

@@ -599,7 +599,7 @@ End Sub
 Private Sub LoadDefaultValues()
     
     Dim MaxConstItem As Integer
-    Dim i As Integer
+    Dim Iterator As Integer
 
     Cargando = True
     
@@ -607,9 +607,9 @@ Private Sub LoadDefaultValues()
     MaxConstItem = IIf(MaxConstItem < 1, 1, MaxConstItem)
     MaxConstItem = IIf(UserClase = eClass.Worker, MaxConstItem, 1)
     
-    For i = 1 To MaxConstItem
+    For Iterator = 1 To MaxConstItem
         cboItemsCiclo.AddItem i
-    Next i
+    Next Iterator
     
     cboItemsCiclo.ListIndex = 0
     
@@ -655,7 +655,7 @@ Private Sub Construir(ByVal Index As Integer)
 End Sub
 
 Public Sub HideExtraControls(ByVal NumItems As Integer, Optional ByVal Upgrading As Boolean = False)
-    Dim i As Integer
+    Dim Iterator As Integer
     
     picMaderas0.Visible = (NumItems >= 1)
     picMaderas1.Visible = (NumItems >= 2)
@@ -673,15 +673,15 @@ Public Sub HideExtraControls(ByVal NumItems As Integer, Optional ByVal Upgrading
     imgMejorar3.Visible = (NumItems >= 4 And Upgrading)
 
     
-    For i = 1 To MAX_LIST_ITEMS
-        picItem(i).Visible = (NumItems >= i)
-        imgMarcoItem(i).Visible = (NumItems >= i)
-        imgMarcoMaderas(i).Visible = (NumItems >= i)
+    For Iterator = 1 To MAX_LIST_ITEMS
+        picItem(Iterator).Visible = (NumItems >= i)
+        imgMarcoItem(Iterator).Visible = (NumItems >= i)
+        imgMarcoMaderas(Iterator).Visible = (NumItems >= i)
 
         ' Upgrade
-        imgMarcoUpgrade(i).Visible = (NumItems >= i And Upgrading)
-        picUpgrade(i).Visible = (NumItems >= i And Upgrading)
-    Next i
+        imgMarcoUpgrade(Iterator).Visible = (NumItems >= i And Upgrading)
+        picUpgrade(Iterator).Visible = (NumItems >= i And Upgrading)
+    Next Iterator
     
     If NumItems > MAX_LIST_ITEMS Then
         Scroll.Visible = True
@@ -724,51 +724,51 @@ End Sub
 Public Sub RenderList(ByVal Inicio As Integer)
 On Error Resume Next
 
-    Dim i As Long
+    Dim Iterator As Long
     Dim NumItems As Integer
     
     NumItems = UBound(ObjCarpintero)
     Inicio = Inicio - 1
     
-    For i = 1 To MAX_LIST_ITEMS
-        If i + Inicio <= NumItems Then
+    For Iterator = 1 To MAX_LIST_ITEMS
+        If Iterator + Inicio <= NumItems Then
             With ObjCarpintero(i + Inicio)
                 ' Agrego el item
-                Call RenderItem(picItem(i), .GrhIndex)
-                picItem(i).ToolTipText = .Name
+                Call RenderItem(picItem(Iterator), .GrhIndex)
+                picItem(Iterator).ToolTipText = .Name
             
                 ' Inventario de leños
-                Call InvMaderasCarpinteria(i).SetItem(1, 0, .Madera, 0, MADERA_GRH, 0, 0, 0, 0, 0, 0, "Leña")
-                Call InvMaderasCarpinteria(i).SetItem(2, 0, .MaderaElfica, 0, MADERA_ELFICA_GRH, 0, 0, 0, 0, 0, 0, "Leña élfica")
+                Call InvMaderasCarpinteria(Iterator).SetItem(1, 0, .Madera, 0, MADERA_GRH, 0, 0, 0, 0, 0, 0, "Leña")
+                Call InvMaderasCarpinteria(Iterator).SetItem(2, 0, .MaderaElfica, 0, MADERA_ELFICA_GRH, 0, 0, 0, 0, 0, 0, "Leña élfica")
             End With
         End If
-    Next i
+    Next Iterator
     
 End Sub
 
 Public Sub RenderUpgradeList(ByVal Inicio As Integer)
-Dim i As Long
+Dim Iterator As Long
 Dim NumItems As Integer
 
 NumItems = UBound(CarpinteroMejorar)
 Inicio = Inicio - 1
 
-For i = 1 To MAX_LIST_ITEMS
-    If i + Inicio <= NumItems Then
+For Iterator = 1 To MAX_LIST_ITEMS
+    If Iterator + Inicio <= NumItems Then
         With CarpinteroMejorar(i + Inicio)
             ' Agrego el item
-            Call RenderItem(picItem(i), .GrhIndex)
-            picItem(i).ToolTipText = .Name
+            Call RenderItem(picItem(Iterator), .GrhIndex)
+            picItem(Iterator).ToolTipText = .Name
             
-            Call RenderItem(picUpgrade(i), .UpgradeGrhIndex)
-            picUpgrade(i).ToolTipText = .UpgradeName
+            Call RenderItem(picUpgrade(Iterator), .UpgradeGrhIndex)
+            picUpgrade(Iterator).ToolTipText = .UpgradeName
         
             ' Inventario de leños
-            Call InvMaderasCarpinteria(i).SetItem(1, 0, .Madera, 0, MADERA_GRH, 0, 0, 0, 0, 0, 0, "Leña")
-            Call InvMaderasCarpinteria(i).SetItem(2, 0, .MaderaElfica, 0, MADERA_ELFICA_GRH, 0, 0, 0, 0, 0, 0, "Leña élfica")
+            Call InvMaderasCarpinteria(Iterator).SetItem(1, 0, .Madera, 0, MADERA_GRH, 0, 0, 0, 0, 0, 0, "Leña")
+            Call InvMaderasCarpinteria(Iterator).SetItem(2, 0, .MaderaElfica, 0, MADERA_ELFICA_GRH, 0, 0, 0, 0, 0, 0, "Leña élfica")
         End With
     End If
-Next i
+Next Iterator
 End Sub
 
 
@@ -777,11 +777,11 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y A
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-    Dim i As Long
+    Dim Iterator As Long
     
-    For i = 1 To MAX_LIST_ITEMS
-        Set InvMaderasCarpinteria(i) = Nothing
-    Next i
+    For Iterator = 1 To MAX_LIST_ITEMS
+        Set InvMaderasCarpinteria(Iterator) = Nothing
+    Next Iterator
 
     MirandoCarpinteria = False
 End Sub
@@ -836,7 +836,7 @@ Private Sub imgMejorar3_Click()
 End Sub
 
 Private Sub imgPestania_Click(Index As Integer)
-    Dim i As Integer
+    Dim Iterator As Integer
     Dim NumItems As Integer
     
     If Cargando Then Exit Sub
@@ -873,7 +873,7 @@ Private Sub imgPestania_Click(Index As Integer)
 End Sub
 
 Private Sub Scroll_Change()
-    Dim i As Long
+    Dim Iterator As Long
     
     If Cargando Then Exit Sub
     

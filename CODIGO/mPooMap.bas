@@ -263,10 +263,10 @@ End Function
 
 Public Function Map_CheckBonfire(ByRef Location As Position) As Boolean
 
-      Dim J As Long
+      Dim Counter As Long
       Dim k As Long
     
-      For J = UserPos.X - 8 To UserPos.X + 8
+      For Counter = UserPos.X - 8 To UserPos.X + 8
             For k = UserPos.Y - 6 To UserPos.Y + 6
 
                   If Map_InBounds(J, k) Then
@@ -282,7 +282,7 @@ Public Function Map_CheckBonfire(ByRef Location As Position) As Boolean
                   End If
 
             Next k
-      Next J
+      next Counter
 
 End Function
 

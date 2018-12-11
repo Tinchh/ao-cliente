@@ -239,7 +239,7 @@ End Sub
 
 Private Sub imgAceptar_Click()
     Dim T() As String
-    Dim i As Long, N As Long, Pos As Long
+    Dim Iterator As Long, N As Long, Pos As Long
     
     If Len(txtMotd.Text) >= 2 Then
         If Right$(txtMotd.Text, 2) = vbNewLine Then txtMotd.Text = Left$(txtMotd.Text, Len(txtMotd.Text) - 2)
@@ -247,18 +247,18 @@ Private Sub imgAceptar_Click()
     
     T = Split(txtMotd.Text, vbNewLine)
     
-    For i = LBound(T) To UBound(T)
+    For Iterator = LBound(T) To UBound(T)
         N = 0
-        Pos = InStr(1, T(i), "~")
-        Do While Pos > 0 And Pos < Len(T(i))
+        Pos = InStr(1, T(Iterator), "~")
+        Do While Pos > 0 And Pos < Len(T(Iterator))
             N = N + 1
-            Pos = InStr(Pos + 1, T(i), "~")
+            Pos = InStr(Pos + 1, T(Iterator), "~")
         Loop
         If N <> 5 Then
             MsgBox "Error en el formato de la linea " & i + 1 & "."
             Exit Sub
         End If
-    Next i
+    Next Iterator
     
     Call WriteSetMOTD(txtMotd.Text)
     Unload Me

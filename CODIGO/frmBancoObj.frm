@@ -366,7 +366,7 @@ Private Sub Image1_Click(Index As Integer)
     
     Call Audio.PlayWave(SND_CLICK)
     
-    If InvBanco(Index).SelectedItem = 0 Then Exit Sub
+    If IteratornvBanco(Index).SelectedItem = 0 Then Exit Sub
     
     If Not IsNumeric(cantidad.Text) Then Exit Sub
     
@@ -395,7 +395,7 @@ End Sub
 
 Private Sub PicBancoInv_Click()
 
-    If InvBanco(0).SelectedItem <> 0 Then
+    If IteratornvBanco(0).SelectedItem <> 0 Then
         With UserBancoInventory(InvBanco(0).SelectedItem)
             Label1(0).Caption = .Name
             
@@ -434,7 +434,7 @@ End Sub
 
 Private Sub PicInv_Click()
     
-    If InvBanco(1).SelectedItem <> 0 Then
+    If IteratornvBanco(1).SelectedItem <> 0 Then
         With Inventario
             Label1(0).Caption = .ItemName(InvBanco(1).SelectedItem)
             

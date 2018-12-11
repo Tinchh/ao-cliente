@@ -390,7 +390,7 @@ Public Function toString(ByRef obj As Variant) As String
       Case vbObject
          
          Dim bFI As Boolean
-         Dim i As Long
+         Dim Iterator As Long
          
          bFI = True
          If TypeName(obj) = "Dictionary" Then
@@ -398,12 +398,12 @@ Public Function toString(ByRef obj As Variant) As String
             SB.Append "{"
             Dim keys
             keys = obj.keys
-            For i = 0 To obj.Count - 1
+            For Iterator = 0 To obj.Count - 1
                If bFI Then bFI = False Else SB.Append ","
                Dim key
-               key = keys(i)
+               key = keys(Iterator)
                SB.Append """" & key & """:" & toString(obj.Item(key))
-            Next i
+            Next Iterator
             SB.Append "}"
 
          ElseIf TypeName(obj) = "Collection" Then
@@ -434,8 +434,8 @@ End Function
 Private Function Encode(str) As String
 
    Dim SB As New cStringBuilder
-   Dim i As Long
-   Dim j As Long
+   Dim Iterator As Long
+   Dim Counter As Long
    Dim aL1 As Variant
    Dim aL2 As Variant
    Dim c As String
@@ -443,12 +443,12 @@ Private Function Encode(str) As String
 
    aL1 = Array(&H22, &H5C, &H2F, &H8, &HC, &HA, &HD, &H9)
    aL2 = Array(&H22, &H5C, &H2F, &H62, &H66, &H6E, &H72, &H74)
-   For i = 1 To Len(str)
+   For Iterator = 1 To Len(str)
       p = True
       c = mid$(str, i, 1)
-      For j = 0 To 7
-         If c = Chr$(aL1(j)) Then
-            SB.Append "\" & Chr$(aL2(j))
+      For Counter = 0 To 7
+         If c = Chr$(aL1(Counter)) Then
+            SB.Append "\" & Chr$(aL2(Counter))
             p = False
             Exit For
          End If
@@ -474,7 +474,7 @@ Private Function multiArray(aBD, iBC, sPS, ByRef sPT)   ' Array BoDy, Integer Ba
    
    Dim iDU As Long
    Dim iDL As Long
-   Dim i As Long
+   Dim Iterator As Long
    
    On Error Resume Next
    iDL = LBound(aBD, iBC)
@@ -485,7 +485,7 @@ Private Function multiArray(aBD, iBC, sPS, ByRef sPT)   ' Array BoDy, Integer Ba
    Dim sPB1, sPB2  ' String PointBuffer1, String PointBuffer2
    If Err.number = 9 Then
       sPB1 = sPT & sPS
-      For i = 1 To Len(sPB1)
+      For Iterator = 1 To Len(sPB1)
          If i <> 1 Then sPB2 = sPB2 & ","
          sPB2 = sPB2 & mid$(sPB1, i, 1)
       Next
@@ -494,7 +494,7 @@ Private Function multiArray(aBD, iBC, sPS, ByRef sPT)   ' Array BoDy, Integer Ba
    Else
       sPT = sPT & sPS
       SB.Append "["
-      For i = iDL To iDU
+      For Iterator = iDL To iDU
          SB.Append multiArray(aBD, iBC + 1, i, sPT)
          If i < iDU Then SB.Append ","
       Next

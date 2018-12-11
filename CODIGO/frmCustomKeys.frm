@@ -630,7 +630,7 @@ Private InitialConfig As Byte
 Private CurrentTab As Integer
 
 Private Sub Form_Load()
-    Dim i As Long
+    Dim Iterator As Long
     
     ' Handles Form movement (drag and drop).
     Set clsFormulario = New clsFormMovementManager
@@ -645,9 +645,9 @@ Private Sub Form_Load()
     
     CurrentTab = SelectedConfig
     
-    For i = 1 To CustomKeys.KeyCount
-        Text1(i).Text = CustomKeys.ReadableName(CustomKeys.BindedKey(i))
-    Next i
+    For Iterator = 1 To CustomKeys.KeyCount
+        Text1(Iterator).Text = CustomKeys.ReadableName(CustomKeys.BindedKey(Iterator))
+    Next Iterator
 End Sub
 
 Private Sub LoadButtons()
@@ -685,15 +685,15 @@ End Sub
 
 Private Sub imgGuardar_Click()
 
-    Dim i As Long
+    Dim Iterator As Long
     Dim sMsg As String
     
-    For i = 1 To CustomKeys.KeyCount
-        If LenB(Text1(i).Text) = 0 Then
+    For Iterator = 1 To CustomKeys.KeyCount
+        If LenB(Text1(Iterator).Text) = 0 Then
             Call MsgBox("Hay una o más teclas no válidas, por favor verifique.", vbCritical Or vbOKOnly Or vbApplicationModal Or vbDefaultButton1, "Argentum Online")
             Exit Sub
         End If
-    Next i
+    Next Iterator
     
     CustomKeys.CurrentConfig = SelectedConfig
     
@@ -714,7 +714,7 @@ End Sub
 
 
 Private Sub Text1_KeyDown(Index As Integer, KeyCode As Integer, Shift As Integer)
-    Dim i As Long
+    Dim Iterator As Long
     
     ' Can't change default combination
     If CurrentTab = 0 Then Exit Sub
@@ -725,9 +725,9 @@ Private Sub Text1_KeyDown(Index As Integer, KeyCode As Integer, Shift As Integer
     Text1(Index).Text = CustomKeys.ReadableName(KeyCode)
     Text1(Index).SelStart = Len(Text1(Index).Text)
     
-    For i = 1 To CustomKeys.KeyCount
-        If i <> Index Then
-            If CustomKeys.BindedKey(i) = KeyCode Then
+    For Iterator = 1 To CustomKeys.KeyCount
+        If Iterator <> Index Then
+            If CustomKeys.BindedKey(Iterator) = KeyCode Then
                 Text1(Index).Text = vbNullString 'If the key is already assigned, simply reject it
                 Call Beep 'Alert the user
                 KeyCode = 0
@@ -735,7 +735,7 @@ Private Sub Text1_KeyDown(Index As Integer, KeyCode As Integer, Shift As Integer
                 Exit Sub
             End If
         End If
-    Next i
+    Next Iterator
     
     CustomKeys.BindedKey(Index) = KeyCode
     
@@ -754,9 +754,9 @@ Private Sub Text1_MouseMove(Index As Integer, Button As Integer, Shift As Intege
 End Sub
 Private Sub ShowConfig()
 
-    Dim i As Long
+    Dim Iterator As Long
 
-    For i = 1 To CustomKeys.KeyCount
-        Text1(i).Text = CustomKeys.ReadableName(CustomKeys.BindedKey(i))
-    Next i
+    For Iterator = 1 To CustomKeys.KeyCount
+        Text1(Iterator).Text = CustomKeys.ReadableName(CustomKeys.BindedKey(Iterator))
+    Next Iterator
 End Sub

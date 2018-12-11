@@ -258,15 +258,15 @@ Public Sub LoadCustomKeys()
 '16/11/2010: Amraphen - Adapté el procedimiento para cargar todas las configuraciones de teclas.
 '18/11/2010: Amraphen - Modifiqué la forma en que se cargan los bindings y ahora carga los del formato viejo.
 '***************************************************
-Dim i As Long
-Dim J As Long
-Dim FileNum As Integer
+    Dim Iterator As Long
+    Dim Counter As Long
+    Dim FileNum As Integer
 
      'Si no existe el archivo lo creamos con los bindings default:
     If Not FileExist(App.path & KEY_CONFIG_FILE, vbArchive) Then
-        For i = 0 To NUM_CUSTOM_CONFIGS
-            Call LoadDefaults(i)
-        Next i
+        For Iterator = 0 To NUM_CUSTOM_CONFIGS
+            Call LoadDefaults(Iterator)
+        Next Iterator
         
         ActiveConfig = 1
         
@@ -281,24 +281,24 @@ Dim FileNum As Integer
             
             ActiveConfig = 1
             
-            For i = 0 To NUM_CUSTOM_CONFIGS
-                Call LoadDefaults(i)
-            Next i
+            For Iterator = 0 To NUM_CUSTOM_CONFIGS
+                Call LoadDefaults(Iterator)
+            Next Iterator
             
-            For J = 1 To NUM_CUSTOM_KEYS
-                Get FileNum, , mappedKeys(ActiveConfig, J)
-            Next J
+            For Counter = 1 To NUM_CUSTOM_KEYS
+                Get FileNum, , mappedKeys(ActiveConfig, Counter)
+            Next Counter
         Else
             'Formato nuevo
             Open App.path & KEY_CONFIG_FILE For Binary Access Read Lock Read Write As FileNum
             
             Get FileNum, , ActiveConfig
             
-            For i = 0 To NUM_CUSTOM_CONFIGS
-                For J = 1 To NUM_CUSTOM_KEYS
-                    Get FileNum, , mappedKeys(i, J)
-                Next J
-            Next i
+            For Iterator = 0 To NUM_CUSTOM_CONFIGS
+                For Counter = 1 To NUM_CUSTOM_KEYS
+                    Get FileNum, , mappedKeys(Iterator, Counter)
+                Next Counter
+            Next Iterator
         End If
         
         Close FileNum
@@ -317,8 +317,8 @@ Public Sub SaveCustomKeys()
 '16/11/2010: Amraphen - Adapté el procedimiento para guardar todas las configuraciones de teclas.
 '18/11/2010: Amraphen - Ahora se guarda la configuración activa.
 '***************************************************
-Dim i As Long
-Dim J As Long
+Dim Iterator As Long
+Dim Counter As Long
 Dim FileNum As Integer
 
     FileNum = FreeFile()
@@ -329,11 +329,11 @@ Dim FileNum As Integer
     Put FileNum, , ActiveConfig
     
     'Guardo las distintas configuraciones:
-    For i = 0 To NUM_CUSTOM_CONFIGS
-        For J = 1 To NUM_CUSTOM_KEYS
-            Put FileNum, , mappedKeys(i, J)
-        Next J
-    Next i
+    For Iterator = 0 To NUM_CUSTOM_CONFIGS
+        For Counter = 1 To NUM_CUSTOM_KEYS
+            Put FileNum, , mappedKeys(Iterator, Counter)
+        Next Counter
+    Next Iterator
     
     Close FileNum
 End Sub

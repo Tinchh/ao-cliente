@@ -247,15 +247,15 @@ Private cBotonCancelar As clsGraphicalButton
 Public LastButtonPressed As clsGraphicalButton
 
 Private Sub Form_Load()
-    Dim i As Long
+    Dim Iterator As Long
     
     ' Handles Form movement (drag and drop).
     Set clsFormulario = New clsFormMovementManager
     clsFormulario.Initialize Me
     
-    For i = 0 To 9
-        messageTxt(i) = CustomMessages.Message(i)
-    Next i
+    For Iterator = 0 To 9
+        messageTxt(Iterator) = CustomMessages.Message(Iterator)
+    Next Iterator
 
     Me.Picture = LoadPicture(App.path & "\graficos\VentanaMensajesPersonalizados.jpg")
     
@@ -289,11 +289,11 @@ End Sub
 
 Private Sub imgGuardar_Click()
 On Error GoTo ErrHandler
-    Dim i As Long
+    Dim Iterator As Long
     
-    For i = 0 To 9
-        CustomMessages.Message(i) = messageTxt(i)
-    Next i
+    For Iterator = 0 To 9
+        CustomMessages.Message(Iterator) = messageTxt(Iterator)
+    Next Iterator
     
     Unload Me
 Exit Sub

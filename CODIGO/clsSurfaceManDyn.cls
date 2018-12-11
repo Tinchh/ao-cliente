@@ -99,20 +99,20 @@ Private Sub Class_Terminate()
 'Last Modify Date: 3/06/2006
 'Clean up
 '**************************************************************
-    Dim i As Long
-    Dim J As Long
+    Dim Iterator As Long
+    Dim Counter As Long
     
     'Destroy every surface in memory
-    For i = 0 To HASH_TABLE_SIZE - 1
-        With surfaceList(i)
-            For J = 1 To .surfaceCount
-                Set .SurfaceEntry(J).Surface = Nothing
-            Next J
+    For Iterator = 0 To HASH_TABLE_SIZE - 1
+        With surfaceList(Iterator)
+            For Counter = 1 To .surfaceCount
+                Set .SurfaceEntry(Counter).Surface = Nothing
+            Next Counter
             
             'Destroy the arrays
             Erase .SurfaceEntry
         End With
-    Next i
+    Next Iterator
 End Sub
 
 Private Sub clsSurfaceManager_Initialize(ByRef DD As D3DX8, ByVal graphicPath As String, Optional ByVal maxMemoryUsageInMb As Long = -1)
@@ -140,17 +140,17 @@ Private Property Get clsSurfaceManager_Surface(ByVal fileIndex As Long) As Direc
 'Last Modify Date: 3/06/2006
 'Retrieves the requested texture
 '**************************************************************
-    Dim i As Long
+    Dim Iterator As Long
     
     ' Search the index on the list
     With surfaceList(fileIndex Mod HASH_TABLE_SIZE)
-        For i = 1 To .surfaceCount
-            If .SurfaceEntry(i).fileIndex = fileIndex Then
-                .SurfaceEntry(i).lastAccess = GetTickCount
-                Set clsSurfaceManager_Surface = .SurfaceEntry(i).Surface
+        For Iterator = 1 To .surfaceCount
+            If .SurfaceEntry(Iterator).fileIndex = fileIndex Then
+                .SurfaceEntry(Iterator).lastAccess = GetTickCount
+                Set clsSurfaceManager_Surface = .SurfaceEntry(Iterator).Surface
                 Exit Property
             End If
-        Next i
+        Next Iterator
     End With
     
     'Not in memory, load it!
@@ -224,24 +224,24 @@ Private Function RemoveLRU() As Boolean
     Dim LRUi As Long
     Dim LRUj As Long
     Dim LRUtime As Long
-    Dim i As Long
-    Dim J As Long
+    Dim Iterator As Long
+    Dim Counter As Long
     Dim ddsd As D3DSURFACE_DESC
     
     LRUtime = GetTickCount
     
     'Check out through the whole list for the least recently used
-    For i = 0 To HASH_TABLE_SIZE - 1
-        With surfaceList(i)
-            For J = 1 To .surfaceCount
-                If LRUtime > .SurfaceEntry(J).lastAccess Then
+    For Iterator = 0 To HASH_TABLE_SIZE - 1
+        With surfaceList(Iterator)
+            For Counter = 1 To .surfaceCount
+                If LRUtime > .SurfaceEntry(Counter).lastAccess Then
                     LRUi = i
                     LRUj = J
-                    LRUtime = .SurfaceEntry(J).lastAccess
+                    LRUtime = .SurfaceEntry(Counter).lastAccess
                 End If
-            Next J
+            Next Counter
         End With
-    Next i
+    Next Iterator
     
     If LRUj Then
         RemoveLRU = True
@@ -254,9 +254,9 @@ Private Function RemoveLRU() As Boolean
         
         'Move back the list (if necessary)
         With surfaceList(LRUi)
-            For J = LRUj To .surfaceCount - 1
-                .SurfaceEntry(J) = .SurfaceEntry(J + 1)
-            Next J
+            For Counter = LRUj To .surfaceCount - 1
+                .SurfaceEntry(Counter) = .SurfaceEntry(J + 1)
+            Next Counter
             
             .surfaceCount = .surfaceCount - 1
             If .surfaceCount Then

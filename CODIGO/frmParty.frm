@@ -358,19 +358,19 @@ Private Sub SendTxt_Change()
         sPartyChat = "Soy un cheater, avisenle a un gm"
     Else
         'Make sure only valid chars are inserted (with Shift + Insert they can paste illegal chars)
-        Dim i As Long
+        Dim Iterator As Long
         Dim tempstr As String
-        Dim CharAscii As Integer
+        Dim CharAsciIterator As Integer
         
-        For i = 1 To Len(SendTxt.Text)
-            CharAscii = Asc(mid$(SendTxt.Text, i, 1))
+        For Iterator = 1 To Len(SendTxt.Text)
+            CharAscii = Asc(mid$(SendTxt.Text, Iterator, 1))
             If CharAscii >= vbKeySpace And CharAscii <= 250 Then
                 tempstr = tempstr & Chr$(CharAscii)
             End If
-        Next i
+        Next Iterator
         
         If tempstr <> SendTxt.Text Then
-            'We only set it if it's different, otherwise the event will be raised
+            'We only set it If Iteratort's different, otherwise the event will be raised
             'constantly and the client will crush
             SendTxt.Text = tempstr
         End If

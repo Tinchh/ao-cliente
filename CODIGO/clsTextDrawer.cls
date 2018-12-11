@@ -113,7 +113,7 @@ Public Function InitText(DD As DirectDraw7)
 
 Dim ret As size
 Dim tsize As Integer
-Dim i As Long
+Dim Iterator As Long
 Set DirectDraw = DD
 Dim hdc As Long
 
@@ -123,16 +123,16 @@ oldFont = SelectObject(hdc, lngFont)
 tsize = 0
 letters = ""
 
-For i = 32 To 255
-        letters = letters & Chr(i)
-        Call GetTextExtentPoint32(hdc, Chr(i), 1, ret)
-        lettersrect(i).Left = tsize
-        lettersrect(i).Right = tsize + ret.cx
-        lettersrect(i).Top = 0
-        lettersrect(i).Bottom = 13
+For Iterator = 32 To 255
+        letters = letters & Chr(Iterator)
+        Call GetTextExtentPoint32(hdc, Chr(Iterator), 1, ret)
+        lettersrect(Iterator).Left = tsize
+        lettersrect(Iterator).Right = tsize + ret.cx
+        lettersrect(Iterator).Top = 0
+        lettersrect(Iterator).Bottom = 13
         tsize = tsize + ret.cx
-        If i = 126 Then i = 160
-Next i
+        If Iterator = 126 Then i = 160
+Next Iterator
 
     surfacesize.cy = ret.cy
     surfacesize.cx = tsize
@@ -153,14 +153,14 @@ Private Function GetTextSurface(color As Long) As DirectDrawSurface7
 'Last Modify Date: 07/31/2010
 '
 '**************************************************************
-Dim i As Long
+Dim Iterator As Long
 
-For i = 0 To CantColors
-    If TextSurfaces(i) = color Then
-        Set GetTextSurface = Surface(i)
+For Iterator = 0 To CantColors
+    If TextSurfaces(Iterator) = color Then
+        Set GetTextSurface = Surface(Iterator)
         Exit Function
     End If
-Next i
+Next Iterator
 
 If CantColors < MAX_COLORS Then 'creo la nueva surface
     Set Surface(CantColors) = CreateSurface(color)
@@ -233,7 +233,7 @@ Public Function DrawText(ByVal X As Long, ByVal Y As Long, ByVal Text As String,
 'Last Modify Date: 07/31/2010
 '
 '**************************************************************
-    Dim i As Integer
+    Dim Iterator As Integer
     Dim tx As Long
     Dim textSurface As DirectDrawSurface7
     Dim bytestring() As Byte
@@ -241,10 +241,10 @@ Public Function DrawText(ByVal X As Long, ByVal Y As Long, ByVal Text As String,
         bytestring = StrConv(Text, vbFromUnicode)
         tx = X
         Set textSurface = GetTextSurface(color)
-        For i = 0 To UBound(bytestring) ' - 1
-            Call Surface.BltFast(tx, Y, textSurface, lettersrect(bytestring(i)), DDBLTFAST_SRCCOLORKEY Or DDBLTFAST_WAIT)
-            tx = tx + lettersrect(bytestring(i)).Right - lettersrect(bytestring(i)).Left
-        Next i
+        For Iterator = 0 To UBound(bytestring) ' - 1
+            Call Surface.BltFast(tx, Y, textSurface, lettersrect(bytestring(Iterator)), DDBLTFAST_SRCCOLORKEY Or DDBLTFAST_WAIT)
+            tx = tx + lettersrect(bytestring(Iterator)).Right - lettersrect(bytestring(Iterator)).Left
+        Next Iterator
     End If
 End Function
 
@@ -257,7 +257,7 @@ Public Function DrawTextToDC(hdc As Long, Optional FontSize As Long = 13) As Lon
 
 'Forma alternativa de dibujar texto con GDI
 'La forma de usarla es llamando a la funcion AddText de ahi abajo
-Dim i As Long
+Dim Iterator As Long
 Dim lastcolor As Long
 Dim ret As size
 Dim tRect As RECTO
@@ -271,26 +271,26 @@ SetBkMode hdc, TEXT_TRANSPARENT
 
 'Primero dibujo toda la capa en negro
 SetTextColor hdc, vbBlack
-For i = 0 To textCount - 1
-    With (TextBuffer(i))
+For Iterator = 0 To textCount - 1
+    With (TextBuffer(Iterator))
         If .centered Then ' ya lo dejo acomodado
             Call GetTextExtentPoint32(hdc, .Text, Len(.Text), ret)
             .X = .X - ret.cx \ 2
         End If
         TextOut hdc, .X - 2, .Y - 1, .Text, Len(.Text)
     End With
-Next i
+Next Iterator
 
 'Y ahora toda la capa en color
-For i = 0 To textCount - 1
-    With (TextBuffer(i))
+For Iterator = 0 To textCount - 1
+    With (TextBuffer(Iterator))
         If .color <> lastcolor Then ' si es igual me ahorro una llamada a un api, costo beneficio me va
             SetTextColor hdc, .color
             lastcolor = .color
         End If
         TextOut hdc, .X, .Y, .Text, Len(.Text)
     End With
-Next i
+Next Iterator
 
 
 textCount = 0 ' Se resetea
@@ -334,11 +334,11 @@ Private Sub Class_Terminate()
 '
 '**************************************************************
 
-Dim i As Long
+Dim Iterator As Long
 
-For i = 0 To CantColors
-    Set Surface(i) = Nothing
-Next i
+For Iterator = 0 To CantColors
+    Set Surface(Iterator) = Nothing
+Next Iterator
 
 End Sub
 
@@ -349,7 +349,7 @@ Public Function DrawDice(Optional refresh As Boolean = True) As Long
 '
 '**************************************************************
 
-    Dim i As Long
+    Dim Iterator As Long
     Dim hdc As Long
     Dim tesmpstring As String
     
@@ -381,10 +381,10 @@ Public Function DrawDice(Optional refresh As Boolean = True) As Long
     SetBkColor hdc, vbBlack
     SetTextColor hdc, vbWhite
     
-    For i = 1 To NUMATRIBUTOS
-        TextOut hdc, frmCrearPersonaje.lblAtributos(i).Left, frmCrearPersonaje.lblAtributos(i).Top, frmCrearPersonaje.lblAtributos(i).Caption, Len(frmCrearPersonaje.lblAtributos(i).Caption)
-        TextOut hdc, frmCrearPersonaje.lblAtributoFinal(i).Left, frmCrearPersonaje.lblAtributoFinal(i).Top, frmCrearPersonaje.lblAtributoFinal(i).Caption, Len(frmCrearPersonaje.lblAtributoFinal(i).Caption)
-    Next i
+    For Iterator = 1 To NUMATRIBUTOS
+        TextOut hdc, frmCrearPersonaje.lblAtributos(Iterator).Left, frmCrearPersonaje.lblAtributos(Iterator).Top, frmCrearPersonaje.lblAtributos(Iterator).Caption, Len(frmCrearPersonaje.lblAtributos(Iterator).Caption)
+        TextOut hdc, frmCrearPersonaje.lblAtributoFinal(Iterator).Left, frmCrearPersonaje.lblAtributoFinal(Iterator).Top, frmCrearPersonaje.lblAtributoFinal(Iterator).Caption, Len(frmCrearPersonaje.lblAtributoFinal(Iterator).Caption)
+    Next Iterator
 
     If oldFont <> 0 Then
         Call SelectObject(hdc, oldFont)

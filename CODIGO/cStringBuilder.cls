@@ -215,7 +215,7 @@ Public Sub HeapMinimize()
    ' are allocated:
    If (m_iLen - m_iPos) > m_iChunkSize Then
       iLen = m_iLen
-      Do While (iLen - m_iPos) > m_iChunkSize
+      Do While (IteratorLen - m_iPos) > m_iChunkSize
          iLen = iLen - m_iChunkSize
       Loop
       m_sString = Left$(m_sString, iLen \ 2)

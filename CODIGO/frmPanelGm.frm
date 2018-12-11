@@ -1221,14 +1221,14 @@ Private Sub cmdACEPTCONSECAOS_Click()
 End Sub
 
 Private Sub cmdAddFollow_Click()
-Dim i As Long
+Dim Iterator As Long
 
-    For i = 0 To lstUsers.ListCount
-        If UCase$(lstUsers.List(i)) = UCase$(txtNuevoUsuario.Text) Then
+    For Iterator = 0 To lstUsers.ListCount
+        If UCase$(lstUsers.List(Iterator)) = UCase$(txtNuevoUsuario.Text) Then
             Call MsgBox("¡El usuario ya está en la lista!", vbOKOnly + vbExclamation)
             Exit Sub
         End If
-    Next i
+    Next Iterator
             
     If LenB(txtNuevoUsuario.Text) = 0 Then
         Call MsgBox("¡Escribe el nombre de un usuario!", vbOKOnly + vbExclamation)
@@ -2025,9 +2025,9 @@ End Sub
 Private Sub showTab(TabId As Byte)
     Dim i As Byte
     
-    For i = 1 To Frame.UBound
-        Frame(i).Visible = (i = TabId)
-    Next i
+    For Iterator = 1 To Frame.UBound
+        Frame(Iterator).Visible = (i = TabId)
+    Next Iterator
     
     With Frame(TabId)
         frmPanelGm.Height = .Height + 1280

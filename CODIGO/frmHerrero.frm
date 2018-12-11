@@ -596,7 +596,7 @@ End Sub
 
 Private Sub Form_Load()
     Dim MaxConstItem As Integer
-    Dim i As Integer
+    Dim Iterator As Integer
     
     ' Handles Form movement (drag and drop).
     Set clsFormulario = New clsFormMovementManager
@@ -614,9 +614,9 @@ Private Sub Form_Load()
     MaxConstItem = IIf(MaxConstItem < 1, 1, MaxConstItem)
     MaxConstItem = IIf(UserClase = eClass.Worker, MaxConstItem, 1)
     
-    For i = 1 To MaxConstItem
+    For Iterator = 1 To MaxConstItem
         cboItemsCiclo.AddItem i
-    Next i
+    Next Iterator
     
     cboItemsCiclo.ListIndex = 0
     
@@ -628,20 +628,20 @@ Private Sub Form_Load()
 End Sub
 
 Public Sub HideExtraControls(ByVal NumItems As Integer, Optional ByVal Upgrading As Boolean = False)
-    Dim i As Integer
+    Dim Iterator As Integer
     
     picLingotes0.Visible = (NumItems >= 1)
     picLingotes1.Visible = (NumItems >= 2)
     picLingotes2.Visible = (NumItems >= 3)
     picLingotes3.Visible = (NumItems >= 4)
     
-    For i = 1 To MAX_LIST_ITEMS
-        picItem(i).Visible = (NumItems >= i)
-        imgMarcoItem(i).Visible = (NumItems >= i)
-        imgMarcoLingotes(i).Visible = (NumItems >= i)
-        picUpgradeItem(i).Visible = (NumItems >= i And Upgrading)
-        imgMarcoUpgrade(i).Visible = (NumItems >= i And Upgrading)
-    Next i
+    For Iterator = 1 To MAX_LIST_ITEMS
+        picItem(Iterator).Visible = (NumItems >= i)
+        imgMarcoItem(Iterator).Visible = (NumItems >= i)
+        imgMarcoLingotes(Iterator).Visible = (NumItems >= i)
+        picUpgradeItem(Iterator).Visible = (NumItems >= i And Upgrading)
+        imgMarcoUpgrade(Iterator).Visible = (NumItems >= i And Upgrading)
+    Next Iterator
     
     picConstruir0.Visible = (NumItems >= 1 And Not Upgrading)
     picConstruir1.Visible = (NumItems >= 2 And Not Upgrading)
@@ -695,7 +695,7 @@ End Sub
 Public Sub RenderList(ByVal Inicio As Integer, ByVal Armas As Boolean)
 On Error Resume Next
 
-    Dim i As Long
+    Dim Iterator As Long
     Dim NumItems As Integer
     Dim ObjHerrero() As tItemsConstruibles
     
@@ -708,49 +708,49 @@ On Error Resume Next
     NumItems = UBound(ObjHerrero)
     Inicio = Inicio - 1
     
-    For i = 1 To MAX_LIST_ITEMS
-        If i + Inicio <= NumItems Then
+    For Iterator = 1 To MAX_LIST_ITEMS
+        If Iterator + Inicio <= NumItems Then
             With ObjHerrero(i + Inicio)
                 ' Agrego el item
-                Call RenderItem(picItem(i), .GrhIndex)
-                picItem(i).ToolTipText = .Name
+                Call RenderItem(picItem(Iterator), .GrhIndex)
+                picItem(Iterator).ToolTipText = .Name
      
-                Call RenderItem(picUpgradeItem(i), .UpgradeGrhIndex)
-                picUpgradeItem(i).ToolTipText = .UpgradeName
+                Call RenderItem(picUpgradeItem(Iterator), .UpgradeGrhIndex)
+                picUpgradeItem(Iterator).ToolTipText = .UpgradeName
                 
                  ' Inventariode lingotes
-                Call InvLingosHerreria(i).SetItem(1, 0, .LinH, 0, LH_GRH, 0, 0, 0, 0, 0, 0, "Lingotes de Hierro")
-                Call InvLingosHerreria(i).SetItem(2, 0, .LinP, 0, LP_GRH, 0, 0, 0, 0, 0, 0, "Lingotes de Plata")
-                Call InvLingosHerreria(i).SetItem(3, 0, .LinO, 0, LO_GRH, 0, 0, 0, 0, 0, 0, "Lingotes de Oro")
+                Call InvLingosHerreria(Iterator).SetItem(1, 0, .LinH, 0, LH_GRH, 0, 0, 0, 0, 0, 0, "Lingotes de Hierro")
+                Call InvLingosHerreria(Iterator).SetItem(2, 0, .LinP, 0, LP_GRH, 0, 0, 0, 0, 0, 0, "Lingotes de Plata")
+                Call InvLingosHerreria(Iterator).SetItem(3, 0, .LinO, 0, LO_GRH, 0, 0, 0, 0, 0, 0, "Lingotes de Oro")
             End With
         End If
-    Next i
+    Next Iterator
 End Sub
 
 Public Sub RenderUpgradeList(ByVal Inicio As Integer)
-Dim i As Long
+Dim Iterator As Long
 Dim NumItems As Integer
 
 NumItems = UBound(HerreroMejorar)
 Inicio = Inicio - 1
 
-For i = 1 To MAX_LIST_ITEMS
-    If i + Inicio <= NumItems Then
+For Iterator = 1 To MAX_LIST_ITEMS
+    If Iterator + Inicio <= NumItems Then
         With HerreroMejorar(i + Inicio)
             ' Agrego el item
-            Call RenderItem(picItem(i), .GrhIndex)
-            picItem(i).ToolTipText = .Name
+            Call RenderItem(picItem(Iterator), .GrhIndex)
+            picItem(Iterator).ToolTipText = .Name
             
-            Call RenderItem(picUpgradeItem(i), .UpgradeGrhIndex)
-            picUpgradeItem(i).ToolTipText = .UpgradeName
+            Call RenderItem(picUpgradeItem(Iterator), .UpgradeGrhIndex)
+            picUpgradeItem(Iterator).ToolTipText = .UpgradeName
             
              ' Inventariode lingotes
-            Call InvLingosHerreria(i).SetItem(1, 0, .LinH, 0, LH_GRH, 0, 0, 0, 0, 0, 0, "Lingotes de Hierro")
-            Call InvLingosHerreria(i).SetItem(2, 0, .LinP, 0, LP_GRH, 0, 0, 0, 0, 0, 0, "Lingotes de Plata")
-            Call InvLingosHerreria(i).SetItem(3, 0, .LinO, 0, LO_GRH, 0, 0, 0, 0, 0, 0, "Lingotes de Oro")
+            Call InvLingosHerreria(Iterator).SetItem(1, 0, .LinH, 0, LH_GRH, 0, 0, 0, 0, 0, 0, "Lingotes de Hierro")
+            Call InvLingosHerreria(Iterator).SetItem(2, 0, .LinP, 0, LP_GRH, 0, 0, 0, 0, 0, 0, "Lingotes de Plata")
+            Call InvLingosHerreria(Iterator).SetItem(3, 0, .LinO, 0, LO_GRH, 0, 0, 0, 0, 0, 0, "Lingotes de Oro")
         End With
     End If
-Next i
+Next Iterator
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
@@ -758,11 +758,11 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y A
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-    Dim i As Long
+    Dim Iterator As Long
     
-    For i = 1 To MAX_LIST_ITEMS
-        Set InvLingosHerreria(i) = Nothing
-    Next i
+    For Iterator = 1 To MAX_LIST_ITEMS
+        Set InvLingosHerreria(Iterator) = Nothing
+    Next Iterator
     
     MirandoHerreria = False
 End Sub
@@ -834,7 +834,7 @@ Private Sub picMejorar3_Click()
 End Sub
 
 Private Sub picPestania_Click(Index As Integer)
-    Dim i As Integer
+    Dim Iterator As Integer
     Dim NumItems As Integer
     
     If Cargando Then Exit Sub
@@ -884,7 +884,7 @@ Private Sub picPestania_Click(Index As Integer)
 End Sub
 
 Private Sub Scroll_Change()
-    Dim i As Long
+    Dim Iterator As Long
     
     If Cargando Then Exit Sub
     

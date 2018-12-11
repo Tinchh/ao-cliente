@@ -43,11 +43,11 @@ Public Sub RemoveDialogs()
 'Last Modification: 04/02/07
 'Removes all dialogs
 '***************************************************
-    Dim i As Long
+    Dim Iterator As Long
     
-    For i = 1 To p_CANTIDADDIALOGOS
-        p_Dialogos(i).Texto = vbNullString
-    Next i
+    For Iterator = 1 To p_CANTIDADDIALOGOS
+        p_Dialogos(Iterator).Texto = vbNullString
+    Next Iterator
 End Sub
 
 ''
@@ -86,30 +86,30 @@ If Not p_Activo Then Exit Sub
 
 Y = 250
 '500 600 700 800 900
-    For i = 1 To p_CANTIDADDIALOGOS
-        If Trim$(p_Dialogos(i).Texto) <> vbNullString Then
-            If Left$(p_Dialogos(i).Texto, 1) = Chr$(3) Then
-                'Call Mod_TileEngine.RenderText(260, Y + (i * 10), Mid$(p_Dialogos(i).Texto, 2), vbGreen, usedFont)
-                'DrawText1 TexthDC, 260, Y + (i * 10), Mid$(p_Dialogos(i).Texto, 2), vbGreen
+    For Iterator = 1 To p_CANTIDADDIALOGOS
+        If Trim$(p_Dialogos(Iterator).Texto) <> vbNullString Then
+            If Left$(p_Dialogos(Iterator).Texto, 1) = Chr$(3) Then
+                'Call Mod_TileEngine.RenderText(260, Y + (i * 10), Mid$(p_Dialogos(Iterator).Texto, 2), vbGreen, usedFont)
+                'DrawText1 TexthDC, 260, Y + (i * 10), Mid$(p_Dialogos(Iterator).Texto, 2), vbGreen
                 
             Else
-                'Call Mod_TileEngine.RenderText(260, Y + (i * 10), p_Dialogos(i).Texto, vbYellow, usedFont)
-                'DrawText1 TexthDC, 260, Y + (i * 10), p_Dialogos(i).Texto, vbYellow
+                'Call Mod_TileEngine.RenderText(260, Y + (i * 10), p_Dialogos(Iterator).Texto, vbYellow, usedFont)
+                'DrawText1 TexthDC, 260, Y + (i * 10), p_Dialogos(Iterator).Texto, vbYellow
             End If
         End If
-    Next i
+    Next Iterator
 End Sub
 
 Public Sub PassTimer()
-Dim i As Byte
+    Dim Iterator As Byte
 
-For i = 1 To p_CANTIDADDIALOGOS
-    If p_Dialogos(i).Segundos > 0 Then
-        p_Dialogos(i).Segundos = p_Dialogos(i).Segundos - 1
-    Else
-        p_Dialogos(i).Texto = vbNullString
-    End If
-Next i
+    For Iterator = 1 To p_CANTIDADDIALOGOS
+        If p_Dialogos(Iterator).Segundos > 0 Then
+            p_Dialogos(Iterator).Segundos = p_Dialogos(Iterator).Segundos - 1
+        Else
+            p_Dialogos(Iterator).Texto = vbNullString
+        End If
+    Next Iterator
     
 End Sub
 
@@ -153,18 +153,18 @@ If p_CANTIDADDIALOGOS > 0 Then
     i = p_CANTIDADDIALOGOS
     Vacio = True
     While i > 0 And Vacio
-        Vacio = p_Dialogos(i).Texto = vbNullString
+        Vacio = p_Dialogos(Iterator).Texto = vbNullString
         If Vacio Then i = i - 1
     Wend
     If i = p_CANTIDADDIALOGOS Then
         'hay q scrollear, estamos llenos
         i = 1
         While i < p_CANTIDADDIALOGOS
-            p_Dialogos(i) = p_Dialogos(i + 1)
-            i = i + 1
+            p_Dialogos(Iterator) = p_Dialogos(i + 1)
+            Iterator = Iterator + 1
         Wend
-        p_Dialogos(i).Texto = s
-        p_Dialogos(i).Segundos = p_SEGUNDOS
+        p_Dialogos(Iterator).Texto = s
+        p_Dialogos(Iterator).Segundos = p_SEGUNDOS
     Else
         p_Dialogos(i + 1).Texto = s
         p_Dialogos(i + 1).Segundos = p_SEGUNDOS

@@ -932,16 +932,16 @@ End Sub
 
 Private Sub LoadButtons()
     Dim GrhPath As String
-    Dim i As Long
+    Dim Iterator As Long
     
     GrhPath = DirGraficos
 
 
-    For i = 1 To NUMSKILLS
-        Set cBotonMas(i) = New clsGraphicalButton
-        Set cBotonMenos(i) = New clsGraphicalButton
-        Set cSkillNames(i) = New clsGraphicalButton
-    Next i
+    For Iterator = 1 To NUMSKILLS
+        Set cBotonMas(Iterator) = New clsGraphicalButton
+        Set cBotonMenos(Iterator) = New clsGraphicalButton
+        Set cSkillNames(Iterator) = New clsGraphicalButton
+    Next Iterator
     
     Set cBtonAceptar = New clsGraphicalButton
     Set cBotonCancelar = New clsGraphicalButton
@@ -1250,13 +1250,13 @@ End Sub
 
 Private Sub imgAceptar_Click()
     Dim skillChanges(NUMSKILLS) As Byte
-    Dim i As Long
+    Dim Iterator As Long
 
-    For i = 1 To NUMSKILLS
-        skillChanges(i) = CByte(text1(i).Caption) - UserSkills(i)
+    For Iterator = 1 To NUMSKILLS
+        skillChanges(Iterator) = CByte(text1(Iterator).Caption) - UserSkills(Iterator)
         'Actualizamos nuestros datos locales
-        UserSkills(i) = Val(text1(i).Caption)
-    Next i
+        UserSkills(Iterator) = Val(text1(Iterator).Caption)
+    Next Iterator
     
     Call WriteModifySkills(skillChanges())
     

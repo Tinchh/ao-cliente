@@ -256,17 +256,17 @@ Private Sub ResetSoundValues()
 'Last Modification: 03/04/10
 'Reset the frequency, volume and pan.
 '***************************************************
-    Dim i As Long
+    Dim Iterator As Long
     
-    For i = 1 To NumSoundBuffers
-        If Not DSBuffers(i).Buffer Is Nothing Then
-            With DSBuffers(i)
+    For Iterator = 1 To NumSoundBuffers
+        If Not DSBuffers(Iterator).Buffer Is Nothing Then
+            With DSBuffers(Iterator)
                 Call .Buffer.SetFrequency(.normalFq)
                 Call .Buffer.SetVolume(SndVolume)
                 Call .Buffer.SetPan(0)
             End With
         End If
-    Next i
+    Next Iterator
 End Sub
 
 Private Sub Update3DSound(ByVal bufferIndex As Long, ByVal deltaX As Integer, ByVal deltaY As Integer, Optional ByVal Char As Boolean = False)
@@ -340,7 +340,7 @@ Public Sub MoveListener(ByVal X As Integer, ByVal Y As Integer)
 'Last Modification by: Franco Zeoli (Noich)
 'Moves the position of the listener updating all 3D sounds.
 '***************************************************
-    Dim i As Long
+    Dim Iterator As Long
     Dim deltaX As Integer
     Dim deltaY As Integer
     
@@ -349,15 +349,15 @@ Public Sub MoveListener(ByVal X As Integer, ByVal Y As Integer)
     deltaX = X - lastPosX
     deltaY = Y - lastPosY
     
-    For i = 1 To NumSoundBuffers
-        If Not DSBuffers(i).Buffer Is Nothing Then
-            If DSBuffers(i).Buffer.GetStatus And DSBSTATUS_PLAYING Then
-                If DSBuffers(i).X <> 0 And DSBuffers(i).Y <> 0 Then
+    For Iterator = 1 To NumSoundBuffers
+        If Not DSBuffers(Iterator).Buffer Is Nothing Then
+            If DSBuffers(Iterator).Buffer.GetStatus And DSBSTATUS_PLAYING Then
+                If DSBuffers(Iterator).X <> 0 And DSBuffers(Iterator).Y <> 0 Then
                     Call Update3DSound(i, deltaX, deltaY, True)
                 End If
             End If
         End If
-    Next i
+    Next Iterator
     
     lastPosX = X
     lastPosY = Y
@@ -382,7 +382,7 @@ Private Function LoadWave(ByVal FileName As String, ByVal looping As LoopStyle) 
 On Error GoTo ErrHandler
     Dim bufferDesc As DSBUFFERDESC
     Dim waveFormat As WAVEFORMATEX
-    Dim i As Long
+    Dim Iterator As Long
     
     FileName = UCase$(FileName)
     
@@ -390,47 +390,47 @@ On Error GoTo ErrHandler
         Exit Function
     
     'Check if the buffer is in memory and not playing
-    For i = 1 To NumSoundBuffers
-        If DSBuffers(i).FileName = FileName Then
-            If DSBuffers(i).Buffer.GetStatus = 0 Or DSBuffers(i).Buffer.GetStatus() = DSBSTATUS_BUFFERLOST Then
+    For Iterator = 1 To NumSoundBuffers
+        If DSBuffers(Iterator).FileName = FileName Then
+            If DSBuffers(Iterator).Buffer.GetStatus = 0 Or DSBuffers(Iterator).Buffer.GetStatus() = DSBSTATUS_BUFFERLOST Then
                 'Found it!!! We just play this one :)
                 LoadWave = i
                 
                 'Set looping if needed
-                If looping <> LoopStyle.Default Then DSBuffers(i).looping = (looping = LoopStyle.Enabled)
+                If looping <> LoopStyle.Default Then DSBuffers(Iterator).looping = (looping = LoopStyle.Enabled)
                 
                 'Reset default sound frecuency to avoid issues.
-                Call DSBuffers(i).Buffer.SetFrequency(DSBuffers(i).normalFq)
+                Call DSBuffers(Iterator).Buffer.SetFrequency(DSBuffers(Iterator).normalFq)
                 
                 Exit Function
             End If
         End If
-    Next i
+    Next Iterator
     
     'Not in memory, search for an empty buffer
-    For i = 1 To NumSoundBuffers
-        If DSBuffers(i).Buffer Is Nothing Then
+    For Iterator = 1 To NumSoundBuffers
+        If DSBuffers(Iterator).Buffer Is Nothing Then
             Exit For
         End If
-    Next i
+    Next Iterator
     
     'No empty buffers?? Search for one not being played and use that slot
     If i > NumSoundBuffers Then
-        For i = 1 To NumSoundBuffers
-            If DSBuffers(i).Buffer.GetStatus() = DSBSTATUS_BUFFERLOST Or DSBuffers(i).Buffer.GetStatus() = 0 Then
+        For Iterator = 1 To NumSoundBuffers
+            If DSBuffers(Iterator).Buffer.GetStatus() = DSBSTATUS_BUFFERLOST Or DSBuffers(Iterator).Buffer.GetStatus() = 0 Then
                 Exit For
             End If
-        Next i
+        Next Iterator
     End If
     
     'Still no free buffers?? Get the first non-looping sound
     If i > NumSoundBuffers Then
-        For i = 1 To NumSoundBuffers
-            If Not (DSBuffers(i).Buffer.GetStatus() And DSBSTATUS_LOOPING) Then
-                Call DSBuffers(i).Buffer.Stop
+        For Iterator = 1 To NumSoundBuffers
+            If Not (DSBuffers(Iterator).Buffer.GetStatus() And DSBSTATUS_LOOPING) Then
+                Call DSBuffers(Iterator).Buffer.Stop
                 Exit For
             End If
-        Next i
+        Next Iterator
     End If
     
     'If every sound is looping, just ignore new sound unless it's looping too (in which case we set it at the first slot by default)
@@ -449,7 +449,7 @@ On Error GoTo ErrHandler
     waveFormat.nBlockAlign = waveFormat.nBitsPerSample / 8 * waveFormat.nChannels
     waveFormat.lAvgBytesPerSec = waveFormat.lSamplesPerSec * waveFormat.nBlockAlign
     
-    With DSBuffers(i)
+    With DSBuffers(Iterator)
         Set .Buffer = Nothing   'Get rid of any previous data
         
         .FileName = FileName
@@ -482,14 +482,14 @@ Public Sub StopWave(Optional ByVal bufferIndex As Long = 0)
             Call DSBuffers(bufferIndex).Buffer.Stop
         End If
     ElseIf bufferIndex = 0 Then
-        Dim i As Long
-        For i = 1 To NumSoundBuffers
-            If Not DSBuffers(i).Buffer Is Nothing Then
-                If DSBuffers(i).Buffer.GetStatus() <> 0 And DSBuffers(i).Buffer.GetStatus() <> DSBSTATUS_BUFFERLOST Then
-                    Call DSBuffers(i).Buffer.Stop
+        Dim Iterator As Long
+        For Iterator = 1 To NumSoundBuffers
+            If Not DSBuffers(Iterator).Buffer Is Nothing Then
+                If DSBuffers(Iterator).Buffer.GetStatus() <> 0 And DSBuffers(Iterator).Buffer.GetStatus() <> DSBSTATUS_BUFFERLOST Then
+                    Call DSBuffers(Iterator).Buffer.Stop
                 End If
             End If
-        Next i
+        Next Iterator
     End If
 End Sub
 
@@ -504,16 +504,16 @@ Public Property Get PlayingSound() As Boolean
 'Last Modification: 16/03/04
 'Returns true if there is at least one sound playing
 '***************************************************
-    Dim i As Long
+    Dim Iterator As Long
     
-    For i = 1 To NumSoundBuffers
-        If Not DSBuffers(i).Buffer Is Nothing Then
-            If DSBuffers(i).Buffer.GetStatus() And DSBSTATUS_PLAYING Then
+    For Iterator = 1 To NumSoundBuffers
+        If Not DSBuffers(Iterator).Buffer Is Nothing Then
+            If DSBuffers(Iterator).Buffer.GetStatus() And DSBSTATUS_PLAYING Then
                 PlayingSound = True
                 Exit Property
             End If
         End If
-    Next i
+    Next Iterator
 End Property
 
 ''
@@ -527,20 +527,20 @@ Public Property Let SoundVolume(ByVal Volume As Byte)
 'Last Modification: 16/03/04
 'Sets the sound's volume as a percentage
 '***************************************************
-    Dim i As Long
+    Dim Iterator As Long
     
     If Volume > 100 Then Exit Property
     
     'Take percentage to actual value
     SndVolume = Volume * (DSBVOLUME_MAX - DSBVOLUME_MIN) / 100 + DSBVOLUME_MIN
     
-    For i = 1 To NumSoundBuffers
-        If Not DSBuffers(i).Buffer Is Nothing Then
-            If DSBuffers(i).Buffer.GetStatus And DSBSTATUS_PLAYING Then
-                Call DSBuffers(i).Buffer.SetVolume(SndVolume)
+    For Iterator = 1 To NumSoundBuffers
+        If Not DSBuffers(Iterator).Buffer Is Nothing Then
+            If DSBuffers(Iterator).Buffer.GetStatus And DSBSTATUS_PLAYING Then
+                Call DSBuffers(Iterator).Buffer.SetVolume(SndVolume)
             End If
         End If
-    Next i
+    Next Iterator
 End Property
 
 ''

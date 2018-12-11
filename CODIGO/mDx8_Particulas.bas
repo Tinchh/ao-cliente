@@ -55,7 +55,7 @@ Public Const EffectNum_Smoke As Byte = 12
 'Effect Spell
 Public SpellGrhIndex As Integer
 
-Private Declare Sub ZeroMemory Lib "kernel32.dll" Alias "RtlZeroMemory" (ByRef destination As Any, ByVal length As Long)
+Private Declare Sub ZeroMemory Lib "kernel32.dll" Alias "RtlZeroMemory" (ByRef destination As Any, ByVal Length As Long)
 
 Public Declare Function timeGetTime Lib "winmm.dll" () As Long
 
@@ -65,7 +65,7 @@ Sub Engine_Init_ParticleEngine(Optional ByVal SkipToTextures As Boolean = False)
 'done for any reason in particular, they just use so little memory since they are so small
 'More info: http://www.vbgore.com/GameClient.TileEngine.Engine_Init_ParticleEngine
 '*****************************************************************
-Dim i As Byte
+    Dim Iterator As Long
 
     If Not SkipToTextures Then
         'Set the particles texture
@@ -74,10 +74,10 @@ Dim i As Byte
     
     End If
     
-    For i = 1 To UBound(ParticleTexture())
-        If ParticleTexture(i) Is Nothing Then Set ParticleTexture(i) = Nothing
-        Set ParticleTexture(i) = DirectD3D8.CreateTextureFromFileEx(DirectDevice, App.path & "\graficos\p" & i & ".png", D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_FILTER_POINT, D3DX_FILTER_POINT, &HFF000000, ByVal 0, ByVal 0)
-    Next i
+    For Iterator = 1 To UBound(ParticleTexture())
+        If ParticleTexture(Iterator) Is Nothing Then Set ParticleTexture(Iterator) = Nothing
+        Set ParticleTexture(Iterator) = DirectD3D8.CreateTextureFromFileEx(DirectDevice, App.path & "\graficos\p" & Iterator & ".png", D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_FILTER_POINT, D3DX_FILTER_POINT, &HFF000000, ByVal 0, ByVal 0)
+    Next Iterator
 
 End Sub
 
@@ -139,7 +139,7 @@ Dim EffectIndex As Integer
             Effect_NextOpenSlot = -1
             Exit Function
         End If
-    Loop While Effect(EffectIndex).Used = True    'Check Next If Effect Is In Use
+    Loop While Effect(EffectIndex).Used = True    'Check Next Iteratorf Effect Is In Use
 
     'Return the next open slot
     Effect_NextOpenSlot = EffectIndex
@@ -315,7 +315,7 @@ Dim LoopC As Long
         'Make sure the effect is in use
         If Effect(LoopC).Used Then
         
-            'Update the effect position if it is binded
+            'Update the effect position If Iteratort is binded
             Effect_UpdateBinding LoopC
             
             'Find out which effect is selected, then update it
@@ -888,7 +888,7 @@ Private Sub Effect_Waterfall_Reset(ByVal EffectIndex As Integer, ByVal Index As 
 'More info: http://www.vbgore.com/CommonCode.Particles.Effect_Waterfall_Reset
 '*****************************************************************
 
-    If Int(Rnd * 10) = 1 Then
+    If Iteratornt(Rnd * 10) = 1 Then
         Effect(EffectIndex).Particles(Index).ResetIt Effect(EffectIndex).X + (Rnd * 332), Effect(EffectIndex).Y + (Rnd * 130), 0, 8 + (Rnd * 6), 0, 0
     Else
         Effect(EffectIndex).Particles(Index).ResetIt Effect(EffectIndex).X + (Rnd * 332), Effect(EffectIndex).Y + (Rnd * 10), 0, 8 + (Rnd * 6), 0, 0
@@ -1785,7 +1785,7 @@ Sub Engine_Weather_UpdateFog()
 'Update the fog effects
 '*****************************************************************
 
-Dim i As Long
+Dim Iterator As Long
 Dim X As Long
 Dim Y As Long
 Dim CC(3) As Long
@@ -1833,14 +1833,14 @@ ElapsedTime = Engine_ElapsedTime
     CC(2) = D3DColorARGB(CurMapAmbient.Fog, 255, 255, 255)
     CC(3) = D3DColorARGB(CurMapAmbient.Fog, 255, 255, 255)
     CC(0) = D3DColorARGB(CurMapAmbient.Fog, 255, 255, 255)
-    For i = 1 To WeatherFogCount
+    For Iterator = 1 To WeatherFogCount
         DDrawTransGrhIndextoSurface 27300, (X * 512) + WeatherFogX2, (Y * 512) + WeatherFogY2, 0, CC(), 0, False
         X = X + 1
         If X > (1 + (ScreenWidth \ 512)) Then
             X = 0
             Y = Y + 1
         End If
-    Next i
+    Next Iterator
             
     'Render fog 1
     X = 0
@@ -1849,14 +1849,14 @@ ElapsedTime = Engine_ElapsedTime
     CC(2) = D3DColorARGB(CurMapAmbient.Fog / 2, 255, 255, 255)
     CC(3) = D3DColorARGB(CurMapAmbient.Fog / 2, 255, 255, 255)
     CC(0) = D3DColorARGB(CurMapAmbient.Fog / 2, 255, 255, 255)
-    For i = 1 To WeatherFogCount
+    For Iterator = 1 To WeatherFogCount
         DDrawTransGrhIndextoSurface 27301, (X * 512) + WeatherFogX1, (Y * 512) + WeatherFogY1, 0, CC(), 0, False
         X = X + 1
         If X > (2 + (ScreenWidth \ 512)) Then
             X = 0
             Y = Y + 1
         End If
-    Next i
+    Next Iterator
 
 End Sub
 

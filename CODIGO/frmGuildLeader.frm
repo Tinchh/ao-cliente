@@ -464,7 +464,7 @@ Private Sub FiltrarListaClanes(ByRef sCompare As String)
         ' Recorro los arrays
         For lIndex = 0 To UBound(GuildNames)
             ' Si coincide con los patrones
-            If InStr(1, UCase$(GuildNames(lIndex)), UCase$(sCompare)) Then
+            If IteratornStr(1, UCase$(GuildNames(lIndex)), UCase$(sCompare)) Then
                 ' Lo agrego a la lista
                 .AddItem GuildNames(lIndex)
             End If
@@ -499,7 +499,7 @@ Private Sub FiltrarListaMiembros(ByRef sCompare As String)
         ' Recorro los arrays
         For lIndex = 0 To UBound(GuildMembers)
             ' Si coincide con los patrones
-            If InStr(1, UCase$(GuildMembers(lIndex)), UCase$(sCompare)) Then
+            If IteratornStr(1, UCase$(GuildMembers(lIndex)), UCase$(sCompare)) Then
                 ' Lo agrego a la lista
                 .AddItem GuildMembers(lIndex)
             End If
